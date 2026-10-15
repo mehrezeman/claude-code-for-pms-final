@@ -1,0 +1,780 @@
+<title>Case File 4.2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+  :root{
+    --page-bg:#0C5A8C;
+    --dot:rgba(255,255,255,0.10);
+    --panel:#FFFFFF;
+    --panel-alt:#EEF5FA;
+    --border:#0A2A43;
+    --text:#0A2A43;
+    --text-soft:#3C5A74;
+    --yellow:#FFC72C;
+    --orange:#FF7A1A;
+    --red:#E6392B;
+    --green:#1C9A57;
+    --shadow:#0A2A43;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --page-bg:#061826;
+      --dot:rgba(255,255,255,0.06);
+      --panel:#152C42;
+      --panel-alt:#0F2235;
+      --border:#FFC72C;
+      --text:#F3EFE3;
+      --text-soft:#B9C9D8;
+      --shadow:#FFC72C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page-bg:#061826;
+    --dot:rgba(255,255,255,0.06);
+    --panel:#152C42;
+    --panel-alt:#0F2235;
+    --border:#FFC72C;
+    --text:#F3EFE3;
+    --text-soft:#B9C9D8;
+    --shadow:#FFC72C;
+  }
+
+  body{
+    background-color:var(--page-bg);
+    background-image: radial-gradient(circle, var(--dot) 1.6px, transparent 1.6px);
+    background-size: 15px 15px;
+    color:var(--text);
+    font-family:'Work Sans',system-ui,sans-serif;
+    padding-inline:16px;
+    padding-block:28px 60px;
+  }
+  *{box-sizing:border-box;}
+  .wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:34px;}
+  h1,h2,h3{font-family:'Bangers',system-ui,sans-serif;letter-spacing:.5px;line-height:1.05;text-wrap:balance;}
+  a{color:inherit;}
+  .mono{font-family:'Space Mono',monospace;}
+
+  /* ---- top bar ---- */
+  .topbar{display:flex;justify-content:flex-end;}
+  .theme-btn{
+    font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:1px;
+    background:var(--yellow);color:#1a1a1a;border:3px solid var(--border);
+    padding:6px 12px;border-radius:999px;cursor:pointer;box-shadow:3px 3px 0 var(--shadow);
+  }
+  .theme-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow);}
+
+  /* ---- masthead ---- */
+  .masthead{
+    background:var(--panel);border:4px solid var(--border);border-radius:10px;
+    box-shadow:8px 8px 0 var(--shadow);padding:28px 24px;position:relative;overflow:hidden;
+  }
+  .masthead .stamp{
+    position:absolute;top:14px;right:-28px;transform:rotate(18deg);
+    background:var(--red);color:#fff;font-family:'Space Mono',monospace;font-weight:700;
+    font-size:11px;letter-spacing:1.5px;padding:4px 36px;border:2px solid var(--border);
+  }
+  .masthead h1{font-size:clamp(34px,7vw,56px);margin:0 0 6px;color:var(--text);}
+  .masthead .sub{font-size:16px;color:var(--text-soft);max-width:560px;margin:0 0 14px;}
+  .masthead .meta{display:flex;flex-wrap:wrap;gap:10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-soft);}
+  .masthead .meta span{background:var(--panel-alt);border:1px solid var(--border);padding:3px 8px;border-radius:5px;}
+
+  /* ---- section shell ---- */
+  .exhibit-eyebrow{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:2px;color:var(--panel);background:var(--border);display:inline-block;padding:4px 10px;border-radius:4px;margin-bottom:8px;}
+  section.panel{
+    background:var(--panel);border:4px solid var(--border);border-radius:10px;
+    box-shadow:8px 8px 0 var(--shadow);padding:24px;
+  }
+  section.panel > h2{font-size:clamp(24px,4.5vw,32px);margin:0 0 6px;}
+  .section-intro{color:var(--text-soft);margin:0 0 18px;max-width:640px;font-size:14.5px;}
+
+  /* ---- headline bursts ---- */
+  .bursts{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  @media (max-width:640px){.bursts{grid-template-columns:1fr;}}
+  .burst-tile{position:relative;aspect-ratio:4/3;display:flex;}
+  .burst-tile:nth-child(odd){transform:rotate(-1.4deg);}
+  .burst-tile:nth-child(even){transform:rotate(1.4deg);}
+  .burst-bg,.burst-outline{
+    position:absolute;inset:0;
+    clip-path:polygon(98% 50%,83.3% 63.8%,83.9% 83.9%,63.8% 83.3%,50% 98%,36.2% 83.3%,16.1% 83.9%,16.7% 63.8%,2% 50%,16.7% 36.2%,16.1% 16.1%,36.2% 16.7%,50% 2%,63.8% 16.7%,83.9% 16.1%,83.3% 36.2%);
+  }
+  .burst-outline{inset:-6px;background:var(--border);}
+  .burst-tile:nth-child(1) .burst-bg{background:var(--yellow);}
+  .burst-tile:nth-child(2) .burst-bg{background:var(--orange);}
+  .burst-tile:nth-child(3) .burst-bg{background:var(--orange);}
+  .burst-tile:nth-child(4) .burst-bg{background:var(--yellow);}
+  .burst-content{position:relative;z-index:2;margin:auto;text-align:center;padding:10px 14px;max-width:86%;}
+  .burst-content .label{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;letter-spacing:1px;color:#1a1a1a;margin-bottom:6px;}
+  .burst-content .nums{font-family:'Bangers',sans-serif;font-size:clamp(20px,4.6vw,30px);color:#1a1a1a;line-height:1;white-space:nowrap;}
+  .burst-content .nums .before{opacity:.55;text-decoration:line-through;}
+  .burst-content .nums .arrow{font-size:.7em;margin:0 2px;}
+  .burst-content .sub{font-size:11px;color:#1a1a1a;margin-top:6px;font-weight:600;}
+  .burst-content .src{font-family:'Space Mono',monospace;font-size:9px;color:#1a1a1a;opacity:.75;margin-top:4px;}
+
+  /* ---- mission steps ---- */
+  .mission-toggle{display:flex;align-items:center;gap:10px;margin:0 0 18px;font-family:'Space Mono',monospace;font-size:12.5px;font-weight:700;}
+  .switch{position:relative;width:46px;height:24px;flex:none;}
+  .switch input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0;}
+  .switch .track{position:absolute;inset:0;background:var(--panel-alt);border:2px solid var(--border);border-radius:999px;transition:.15s;}
+  .switch .thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--border);transition:.15s;}
+  .switch input:checked + .track{background:var(--red);}
+  .switch input:checked + .track .thumb{left:24px;background:#fff;}
+  .loop-note{display:none;font-size:12px;color:var(--text-soft);margin:-10px 0 16px;padding:8px 10px;background:var(--panel-alt);border:1px dashed var(--border);border-radius:6px;}
+  body.show-loop .loop-note{display:block;}
+
+  .steps{display:flex;flex-direction:column;gap:10px;}
+  .step{display:flex;gap:12px;border:2px solid var(--border);border-radius:8px;padding:12px;background:var(--panel-alt);cursor:pointer;}
+  .step-badge{flex:none;width:34px;height:34px;border-radius:50%;background:var(--border);color:var(--panel);display:flex;align-items:center;justify-content:center;font-family:'Bangers',sans-serif;font-size:17px;}
+  .step-main{flex:1;min-width:0;}
+  .step-title{font-weight:700;font-size:14.5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;}
+  .step-title .car{font-size:11px;color:var(--text-soft);}
+  .step-body{display:none;font-size:13.5px;color:var(--text-soft);margin-top:6px;}
+  .step.open .step-body{display:block;}
+  .file-chip{display:inline-block;margin-top:8px;font-family:'Space Mono',monospace;font-size:10.5px;background:var(--panel);border:1px solid var(--border);padding:2px 7px;border-radius:4px;}
+  .loop-flag{display:none;font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.5px;background:var(--red);color:#fff;padding:2px 6px;border-radius:4px;flex:none;}
+  body.show-loop .step.loop{border-color:var(--red);border-style:dashed;}
+  body.show-loop .step.loop .loop-flag{display:inline-block;}
+
+  /* ---- scoreboard ---- */
+  .score-rows{display:flex;flex-direction:column;gap:14px;}
+  .score-row{border:2px solid var(--border);border-radius:8px;padding:14px;background:var(--panel-alt);}
+  .score-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
+  .score-head h3{font-family:'Work Sans',sans-serif;font-weight:800;font-size:16px;margin:0;}
+  .req-src{font-size:11px;color:var(--text-soft);margin-top:2px;}
+  .stamps{display:flex;gap:8px;flex-wrap:wrap;}
+  .stamp-pill{font-family:'Space Mono',monospace;font-weight:700;font-size:10.5px;letter-spacing:.5px;padding:4px 9px;border-radius:4px;border:2px solid var(--border);transform:rotate(-3deg);white-space:nowrap;}
+  .stamp-pill.good{background:var(--green);color:#fff;}
+  .stamp-pill.bad{background:var(--red);color:#fff;}
+  .stamp-pill.neutral{background:var(--panel);color:var(--text-soft);}
+  .evidence{font-size:13px;margin-top:10px;line-height:1.5;}
+
+  /* ---- villains ---- */
+  .vfilters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .vfilters button{font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;border:2px solid var(--border);background:var(--panel-alt);color:var(--text);padding:6px 10px;border-radius:6px;cursor:pointer;}
+  .vfilters button.active{background:var(--border);color:var(--panel);}
+  .villains-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media (max-width:640px){.villains-grid{grid-template-columns:1fr;}}
+  .villain-card{border:2px solid var(--border);border-radius:8px;padding:14px;background:var(--panel-alt);position:relative;}
+  .villain-card[hidden]{display:none;}
+  .sev{position:absolute;top:-10px;right:10px;font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:3px 8px;border-radius:4px;border:2px solid var(--border);}
+  .sev.critical{background:var(--red);color:#fff;}
+  .sev.high{background:var(--orange);color:#1a1a1a;}
+  .sev.medium{background:var(--yellow);color:#1a1a1a;}
+  .sev.low{background:var(--panel);color:var(--text-soft);}
+  .villain-card h3{font-family:'Bangers',sans-serif;font-size:19px;margin:4px 0 2px;}
+  .villain-card .real-name{font-size:12.5px;font-weight:700;color:var(--text-soft);margin:0 0 8px;}
+  .villain-card .evidence{font-size:12.5px;}
+
+  /* ---- hero health lab ---- */
+  .lab-disclaimer{background:var(--panel-alt);border:1px dashed var(--border);border-radius:6px;padding:10px 12px;font-size:12.5px;color:var(--text-soft);margin-bottom:16px;}
+  .hero-groups{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+  .hero-btn{font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;border:2px solid var(--border);background:var(--panel-alt);padding:7px 11px;border-radius:6px;cursor:pointer;color:var(--text);}
+  .hero-btn.active{background:var(--border);color:var(--panel);}
+  .hero-sub{font-size:12px;color:var(--text-soft);margin:4px 0 18px;}
+  .lab-grid{display:grid;grid-template-columns:1fr;gap:18px;}
+  .controls{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;background:var(--panel-alt);border:2px solid var(--border);border-radius:8px;padding:14px;}
+  @media (max-width:640px){.controls{grid-template-columns:1fr;}}
+  .ctrl label{font-size:12px;font-weight:700;display:flex;justify-content:space-between;gap:6px;}
+  .ctrl .val{font-family:'Space Mono',monospace;color:var(--text-soft);}
+  .ctrl input[type=range]{width:100%;margin-top:6px;accent-color:var(--orange);}
+  .ctrl.check{display:flex;align-items:center;gap:8px;flex-direction:row;grid-column:1/-1;}
+  .ctrl.check label{font-size:12.5px;}
+  .lab-buttons{grid-column:1/-1;display:flex;justify-content:flex-end;}
+  .reset-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;border:2px solid var(--border);background:var(--panel);padding:6px 10px;border-radius:6px;cursor:pointer;}
+  .chart-wrap{overflow-x:auto;}
+  .chart-wrap svg{width:100%;min-width:560px;height:auto;display:block;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;margin-top:10px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .legend .swatch{width:22px;height:3px;display:inline-block;}
+  .legend .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+
+  /* ---- orders ---- */
+  .progress-wrap{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  .progress-bar{flex:1;height:14px;border:2px solid var(--border);border-radius:999px;background:var(--panel-alt);overflow:hidden;}
+  .progress-fill{height:100%;background:var(--green);width:0%;transition:.2s;}
+  .progress-label{font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .copy-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;border:2px solid var(--border);background:var(--yellow);color:#1a1a1a;padding:6px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;}
+  .orders{display:flex;flex-direction:column;gap:10px;}
+  .order-row{display:flex;gap:12px;border:2px solid var(--border);border-radius:8px;padding:12px;background:var(--panel-alt);align-items:flex-start;}
+  .order-row input[type=checkbox]{width:18px;height:18px;flex:none;margin-top:3px;accent-color:var(--green);}
+  .order-main{flex:1;}
+  .order-top{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;}
+  .prio{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;color:#fff;}
+  .prio.critical{background:var(--red);}
+  .prio.high{background:var(--orange);color:#1a1a1a;}
+  .prio.medium{background:var(--yellow);color:#1a1a1a;}
+  .prio.low{background:var(--text-soft);}
+  .order-title{font-weight:700;font-size:14px;}
+  .order-done{font-size:12.5px;color:var(--text-soft);margin-top:4px;}
+  .order-row.done .order-title{text-decoration:line-through;opacity:.6;}
+
+  /* ---- loose ends ---- */
+  .loose-list{display:flex;flex-direction:column;gap:12px;}
+  .loose-item{border:2px solid var(--border);border-radius:8px;padding:12px;background:var(--panel-alt);}
+  .loose-item h3{font-family:'Work Sans',sans-serif;font-weight:800;font-size:14.5px;margin:0 0 4px;}
+  .loose-item p{font-size:13px;margin:0 0 6px;color:var(--text-soft);}
+  .ask{font-family:'Space Mono',monospace;font-size:11px;background:var(--panel);border:1px solid var(--border);display:inline-block;padding:2px 8px;border-radius:4px;}
+
+  footer{color:var(--panel);font-size:11.5px;text-align:center;opacity:.85;font-family:'Space Mono',monospace;}
+  footer a{text-decoration:underline;}
+</style>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <button class="theme-btn" id="themeBtn" type="button">AUTO</button>
+  </div>
+
+  <header class="masthead">
+    <div class="stamp">CONFIDENTIAL</div>
+    <h1>CASE FILE: RELEASE 4.2</h1>
+    <p class="sub">Rook Dispatch — what the proximity fix did to responders who stopped getting called, told through their own ping history.</p>
+    <div class="meta">
+      <span>OPENED 7 SEP 2026</span>
+      <span>STATUS: ACTIVE</span>
+      <span>SOURCES: rook-wiki &middot; rook-database &middot; dispatch-routing code</span>
+      <span>NO NUMBERS INVENTED</span>
+    </div>
+  </header>
+
+  <!-- EXHIBIT 1 -->
+  <section class="panel">
+    <div class="exhibit-eyebrow">EXHIBIT 1</div>
+    <h2>Four things that changed</h2>
+    <p class="section-intro">All four numbers below are measured, not estimated — pulled straight from the pings and callouts Dispatch actually logged, split at 12 Aug 2026 (when 4.2 shipped).</p>
+    <div class="bursts">
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content">
+          <div class="label">PING ANSWER WINDOW</div>
+          <div class="nums"><span class="before">90s</span><span class="arrow">&rarr;</span>60s</div>
+          <div class="sub">how long a phone keeps ringing before giving up</div>
+          <div class="src">source: config.py / 4.2 release notes</div>
+        </div>
+      </div>
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content">
+          <div class="label">ACCEPTANCE RATE</div>
+          <div class="nums"><span class="before">77%</span><span class="arrow">&rarr;</span>64%</div>
+          <div class="sub">share of pings answered with a yes, all responders</div>
+          <div class="src">source: rook-database, pings table</div>
+        </div>
+      </div>
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content">
+          <div class="label">GONE BEFORE ANSWERED</div>
+          <div class="nums"><span class="before">2%</span><span class="arrow">&rarr;</span>18%</div>
+          <div class="sub">pings that timed out with no answer at all</div>
+          <div class="src">source: rook-database, pings table</div>
+        </div>
+      </div>
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content">
+          <div class="label">HOME-TURF SILENCE</div>
+          <div class="nums"><span class="before">88%</span><span class="arrow">&rarr;</span>22%</div>
+          <div class="sub">4 responders' share of their own area's jobs they got pinged for</div>
+          <div class="src">source: rook-database, pings + callouts + responders</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXHIBIT 2 -->
+  <section class="panel">
+    <div class="exhibit-eyebrow">EXHIBIT 2</div>
+    <h2>The mission: trouble call to buzzing phone</h2>
+    <p class="section-intro">Twelve things actually happen between "something went wrong" and a specific person's phone going off. Tap any step to read it in plain English. Every step names the file it lives in.</p>
+    <label class="mission-toggle">
+      <span class="switch"><input type="checkbox" id="loopToggle"><span class="track"><span class="thumb"></span></span></span>
+      Show where the heroes got stuck
+    </label>
+    <p class="loop-note">Steps marked <strong>PART OF THE LOOP</strong> feed each other: a miss at step 11 drags down the number step 6 looks up next time, which drags down the score step 7 builds, which drags down the ranking step 8 produces — so the same responder is more likely to time out again at step 10, and round it goes.</p>
+    <div class="steps" id="stepsList"></div>
+  </section>
+
+  <!-- EXHIBIT 3 -->
+  <section class="panel">
+    <div class="exhibit-eyebrow">EXHIBIT 3</div>
+    <h2>Asked versus built</h2>
+    <p class="section-intro">What Product actually committed to for 4.2, stamped against what shipped and what it did once it was out in the world.</p>
+    <div class="score-rows" id="scoreRows"></div>
+  </section>
+
+  <!-- EXHIBIT 4 -->
+  <section class="panel">
+    <div class="exhibit-eyebrow">EXHIBIT 4</div>
+    <h2>The villains</h2>
+    <p class="section-intro">The specific defects and design gaps behind the numbers in Exhibit 1. Filter by which file each one lives in.</p>
+    <div class="vfilters" id="vFilters"></div>
+    <div class="villains-grid" id="villainsGrid"></div>
+  </section>
+
+  <!-- EXHIBIT 5 -->
+  <section class="panel">
+    <div class="exhibit-eyebrow">EXHIBIT 5</div>
+    <h2>The hero health lab</h2>
+    <p class="section-intro">Six real responders' real ping histories, run back through the actual scoring formula in <span class="mono">history.py</span> — and through whatever rules you set with the sliders below.</p>
+    <p class="lab-disclaimer"><strong>This is a replay, not a forecast.</strong> It recomputes what the score formula would have produced from each responder's real sequence of taken / turned down / missed pings — it shows what already happened under different rules, it does not predict what happens next. Starting score is <strong>assumed</strong> neutral (0.5) at their first ping in this dataset (29 Jun 2026); their real tenure may be longer, which this replay can't see.</p>
+    <div class="hero-groups" id="heroGroups"></div>
+    <div class="hero-sub" id="heroSub"></div>
+    <div class="lab-grid">
+      <div class="controls" id="controls"></div>
+      <div class="chart-wrap"><svg id="chart" viewBox="0 0 800 330" preserveAspectRatio="xMinYMin meet"></svg></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--text);"></span> today's real rules</span>
+        <span><span class="swatch" style="background:var(--orange);border-top:2px dashed var(--orange);height:0;"></span> your rules</span>
+        <span><span class="dot" style="background:var(--green);"></span> taken</span>
+        <span><span class="dot" style="background:var(--orange);"></span> turned down</span>
+        <span><span class="dot" style="background:var(--red);"></span> missed</span>
+        <span>&#9675; hollow = pinged outside home area</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXHIBIT 6 -->
+  <section class="panel">
+    <div class="exhibit-eyebrow">EXHIBIT 6</div>
+    <h2>Orders for the developer</h2>
+    <p class="section-intro">Priority order. Each one names the file to touch and the line that tells you it's actually done.</p>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">0/6 done</div>
+      <button class="copy-btn" id="copyBtn" type="button">COPY AS TEXT</button>
+    </div>
+    <div class="orders" id="ordersList"></div>
+  </section>
+
+  <!-- EXHIBIT 7 -->
+  <section class="panel">
+    <div class="exhibit-eyebrow">EXHIBIT 7</div>
+    <h2>Loose ends</h2>
+    <p class="section-intro">What this case file could not nail down, and who can actually close each one out.</p>
+    <div class="loose-list" id="looseList"></div>
+  </section>
+
+  <footer>
+    Built from the Rook wiki (4.0&ndash;4.2 release pages, Q3 roadmap), the Rook database (pings, callouts, responders, support_tickets), and <span class="mono">00-rook/code/dispatch-routing/</span>. Internal course exercise &mdash; not a real company.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- THEME ---------------- */
+  var themeBtn = document.getElementById('themeBtn');
+  var themeOrder = ['system','light','dark'];
+  var themeLabels = {system:'AUTO', light:'DAY', dark:'NIGHT'};
+  var curTheme = 'system';
+  try{ curTheme = localStorage.getItem('rook-case-file-theme') || 'system'; }catch(e){}
+  function applyTheme(t){
+    if(t === 'system'){ document.documentElement.removeAttribute('data-theme'); }
+    else { document.documentElement.setAttribute('data-theme', t); }
+    themeBtn.textContent = themeLabels[t];
+  }
+  applyTheme(curTheme);
+  themeBtn.addEventListener('click', function(){
+    curTheme = themeOrder[(themeOrder.indexOf(curTheme)+1) % themeOrder.length];
+    applyTheme(curTheme);
+    try{ localStorage.setItem('rook-case-file-theme', curTheme); }catch(e){}
+  });
+
+  /* ---------------- EXHIBIT 2: MISSION STEPS ---------------- */
+  var STEPS = [
+    {t:"Something goes wrong", body:"An incident comes in needing a responder &mdash; Dispatch knows where, when, and what kind of help is needed.", file:"Console (outside this folder)", loop:false},
+    {t:"Who's free right now?", body:"The system looks at everyone marked available nearby. Availability is set by the responder or their handler &mdash; nothing here changes it.", file:"availability.py", loop:false},
+    {t:"How far is each of them?", body:"For every free person, the system estimates real travel time to the incident &mdash; not straight-line distance.", file:"availability.py", loop:false},
+    {t:"Turn distance into a score", body:"Closer responders score higher. Anyone more than 45 minutes out scores zero on this part.", file:"routing.py &middot; config.py", loop:false},
+    {t:"Can they even do the job?", body:"Each person's skills are checked against what the incident needs.", file:"routing.py", loop:false},
+    {t:"Check their recent track record", body:"The system looks up how often this person has said yes to callouts lately.", file:"history.py", loop:true},
+    {t:"Blend it into one score", body:"Closeness, track record, and skill match get combined into a single number, using fixed weights set by engineering.", file:"routing.py &middot; config.py", loop:true},
+    {t:"Line everyone up", body:"Everyone free gets sorted best-score-first. Nobody is crossed off the list here &mdash; only reordered.", file:"routing.py", loop:true},
+    {t:"Ring the top name", body:"The job goes to the #1 person's phone.", file:"offer.py", loop:false},
+    {t:"Start the clock", body:"They have a fixed window to answer &mdash; 60 seconds today, 90 before 4.2.", file:"offer.py &middot; config.py", loop:true},
+    {t:"No yes? Mark it and move on", body:"A turned-down ping and a timed-out ping count the same way: their track record takes a hit, and the job goes to the next name on the list.", file:"history.py &middot; offer.py", loop:true},
+    {t:"A yes &mdash; the phone buzzes", body:"Their track record ticks up, the search stops, and that's the phone that's ringing.", file:"history.py &middot; offer.py", loop:false}
+  ];
+  var stepsList = document.getElementById('stepsList');
+  STEPS.forEach(function(s, i){
+    var el = document.createElement('div');
+    el.className = 'step' + (s.loop ? ' loop' : '');
+    el.innerHTML =
+      '<div class="step-badge">' + (i+1) + '</div>' +
+      '<div class="step-main">' +
+        '<div class="step-title"><span>' + s.t + '</span><span class="loop-flag">PART OF THE LOOP</span></div>' +
+        '<div class="step-body">' + s.body + '<br><span class="file-chip">' + s.file + '</span></div>' +
+      '</div>';
+    el.addEventListener('click', function(){ el.classList.toggle('open'); });
+    stepsList.appendChild(el);
+  });
+  document.getElementById('loopToggle').addEventListener('change', function(e){
+    document.body.classList.toggle('show-loop', e.target.checked);
+  });
+
+  /* ---------------- EXHIBIT 3: SCOREBOARD ---------------- */
+  var SCORE_ROWS = [
+    {
+      title:"Change to who gets pinged (proximity weighted up)",
+      req:"Committed to release 4.2 &middot; Q3 roadmap, owner Priya, reviewed 30 Jun 2026",
+      built:true, worked:"partial",
+      evidence:"config.py raised proximity's weight (0.45&rarr;0.60) and lowered recent-acceptance's weight (0.40&rarr;0.25) for every responder, with no distinction for who it hits. Two days after ship, the engineering manager asked on the 4.2 wiki page whether that was meant to include responders who'd already been turning jobs down &mdash; \"the config doesn't distinguish between them.\" No answer is on record. Four responders' home-turf ping share fell from 88% to 22% afterward."
+    },
+    {
+      title:"Ping timeout tuning (90s &rarr; 60s)",
+      req:"Committed to release 4.2 &middot; Q3 roadmap, owner Priya, reviewed 30 Jun 2026",
+      built:true, worked:"no",
+      evidence:"config.py cut the answer window from 90 to 60 seconds. Pings that went unanswered jumped from 2% to 18% of all pings afterward. On the 4.2 wiki page, the Support Lead reported ticket volume running \"3x normal\" within a week, split between \"phone never goes off\" and \"gone before I could answer.\""
+    },
+    {
+      title:"Availability Confidence",
+      req:"Committed to release 4.2 &middot; Q3 roadmap, owner Priya, reviewed 30 Jun 2026",
+      built:false, worked:"na",
+      evidence:"The 4.2 release page lists exactly what shipped: the proximity reweight, the timeout cut, console filter persistence, and three defect fixes. Availability Confidence isn't among them, and its roadmap status hasn't been updated since."
+    },
+    {
+      title:"Console filter persistence",
+      req:"Not on the formal Q3 roadmap &mdash; called out informally as long-wanted",
+      built:true, worked:"yes-but",
+      evidence:"Shipped in 4.2. The Product Designer, on the wiki the day after launch: \"filter persistence is live! small thing, been asked for forever.\" It also generated 16 follow-on support tickets about filters resetting or remembering the wrong settings."
+    }
+  ];
+  var WORKED_LABEL = {
+    yes:{cls:'good', text:'WORKED'},
+    'yes-but':{cls:'good', text:'WORKED (WITH A CATCH)'},
+    partial:{cls:'bad', text:'WORKED FOR SOME, NOT OTHERS'},
+    no:{cls:'bad', text:'DID NOT'},
+    na:{cls:'neutral', text:'N/A &mdash; NEVER SHIPPED'}
+  };
+  var scoreRowsEl = document.getElementById('scoreRows');
+  SCORE_ROWS.forEach(function(r){
+    var w = WORKED_LABEL[r.worked];
+    var el = document.createElement('div');
+    el.className = 'score-row';
+    el.innerHTML =
+      '<div class="score-head">' +
+        '<div><h3>' + r.title + '</h3><div class="req-src">' + r.req + '</div></div>' +
+        '<div class="stamps">' +
+          '<span class="stamp-pill ' + (r.built ? 'good' : 'bad') + '">' + (r.built ? 'BUILT' : 'NOT BUILT') + '</span>' +
+          '<span class="stamp-pill ' + w.cls + '">' + w.text + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="evidence">' + r.evidence + '</div>';
+    scoreRowsEl.appendChild(el);
+  });
+
+  /* ---------------- EXHIBIT 4: VILLAINS ---------------- */
+  var VILLAINS = [
+    {name:"The Grudge", sev:"critical", files:["history.py"], real:"Scores only ever go down, never drift back",
+      evidence:"A missed or declined ping costs 0.12. Taking one only earns back 0.08. There's no mechanism to ease a depressed score back toward neutral &mdash; an engineer flagged this exact question in a code comment in 2019 and it was never resolved: \"should this ease back toward NEUTRAL_SCORE on its own after a while?&hellip; Leaving it as-is for now.\""},
+    {name:"The Short Fuse", sev:"high", files:["config.py"], real:"Answer window cut from 90 seconds to 60",
+      evidence:"Pings that went unanswered jumped from 2% to 18% of all pings after 4.2 shipped &mdash; feeding directly into The Grudge's one-way penalty."},
+    {name:"The Blunt Instrument", sev:"high", files:["config.py","routing.py"], real:"One global weight change, no distinction for who it hits",
+      evidence:"The reweight toward proximity applies identically to a reliable responder who's just far away and to one whose track record is already falling. The engineering manager flagged this ambiguity on the 4.2 wiki page two days after ship. It's still unanswered on record."},
+    {name:"No Alarm Bell", sev:"medium", files:["history.py"], real:"Nothing watches a score falling off a cliff",
+      evidence:"Recent-acceptance scores live in a single in-memory dictionary (_scores = {}) with nothing reading or alerting on it. A responder's score can collapse for weeks before a handler notices the silence and files a ticket."},
+    {name:"The Filter Gremlin", sev:"low", files:["outside"], real:"Saved filters keep resetting",
+      evidence:"16 support tickets since 4.2 mention filters resetting or remembering the wrong settings &mdash; cosmetic, and predicted as \"noise\" going in, but still real tickets landing on Support's desk."}
+  ];
+  var FILE_LABELS = {all:"All", "history.py":"history.py", "config.py":"config.py", "routing.py":"routing.py", outside:"Outside this folder"};
+  var vGrid = document.getElementById('villainsGrid');
+  VILLAINS.forEach(function(v){
+    var el = document.createElement('div');
+    el.className = 'villain-card';
+    el.dataset.files = v.files.join(' ');
+    el.innerHTML =
+      '<div class="sev ' + v.sev + '">' + v.sev.toUpperCase() + '</div>' +
+      '<h3>' + v.name + '</h3>' +
+      '<div class="real-name">' + v.real + '</div>' +
+      '<div class="evidence">' + v.evidence + '</div>' +
+      '<div style="margin-top:8px;">' + v.files.map(function(f){ return '<span class="file-chip">' + FILE_LABELS[f] + '</span>'; }).join(' ') + '</div>';
+    vGrid.appendChild(el);
+  });
+  var vFiltersEl = document.getElementById('vFilters');
+  ['all','history.py','config.py','routing.py','outside'].forEach(function(f, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = FILE_LABELS[f];
+    if(i===0) b.classList.add('active');
+    b.addEventListener('click', function(){
+      Array.prototype.forEach.call(vFiltersEl.children, function(c){ c.classList.remove('active'); });
+      b.classList.add('active');
+      Array.prototype.forEach.call(vGrid.children, function(card){
+        var files = card.dataset.files.split(' ');
+        card.hidden = (f !== 'all' && files.indexOf(f) === -1);
+      });
+    });
+    vFiltersEl.appendChild(b);
+  });
+
+  /* ---------------- EXHIBIT 5: HERO HEALTH LAB ---------------- */
+  var HERO_PINGS = {"Farlight":[{"t":"2026-06-30T07:37:38.000Z","o":"T","h":true},{"t":"2026-06-30T23:54:21.000Z","o":"D","h":false},{"t":"2026-07-01T08:52:11.000Z","o":"T","h":true},{"t":"2026-07-01T11:27:10.000Z","o":"D","h":false},{"t":"2026-07-01T11:30:28.000Z","o":"D","h":true},{"t":"2026-07-01T20:52:54.000Z","o":"T","h":true},{"t":"2026-07-01T21:17:01.000Z","o":"T","h":true},{"t":"2026-07-01T21:54:08.000Z","o":"T","h":true},{"t":"2026-07-02T08:34:27.000Z","o":"T","h":true},{"t":"2026-07-02T09:03:53.000Z","o":"T","h":true},{"t":"2026-07-03T16:09:25.000Z","o":"T","h":true},{"t":"2026-07-04T00:50:50.000Z","o":"T","h":true},{"t":"2026-07-06T04:25:01.000Z","o":"T","h":true},{"t":"2026-07-07T09:59:58.000Z","o":"T","h":true},{"t":"2026-07-08T00:09:15.000Z","o":"D","h":true},{"t":"2026-07-08T13:49:31.000Z","o":"T","h":true},{"t":"2026-07-09T08:16:40.000Z","o":"T","h":true},{"t":"2026-07-09T18:47:56.000Z","o":"T","h":true},{"t":"2026-07-09T19:41:48.000Z","o":"D","h":false},{"t":"2026-07-09T20:11:28.000Z","o":"D","h":false},{"t":"2026-07-09T21:21:45.000Z","o":"T","h":true},{"t":"2026-07-11T08:46:11.000Z","o":"T","h":true},{"t":"2026-07-11T14:02:44.000Z","o":"T","h":true},{"t":"2026-07-12T15:37:37.000Z","o":"T","h":true},{"t":"2026-07-13T15:31:38.000Z","o":"T","h":true},{"t":"2026-07-13T23:21:10.000Z","o":"M","h":false},{"t":"2026-07-15T05:05:21.000Z","o":"T","h":true},{"t":"2026-07-15T23:26:14.000Z","o":"T","h":true},{"t":"2026-07-16T14:20:00.000Z","o":"T","h":true},{"t":"2026-07-16T19:06:18.000Z","o":"T","h":true},{"t":"2026-07-17T08:15:15.000Z","o":"D","h":false},{"t":"2026-07-18T18:34:47.000Z","o":"D","h":false},{"t":"2026-07-18T19:34:52.000Z","o":"T","h":true},{"t":"2026-07-18T21:17:00.000Z","o":"T","h":true},{"t":"2026-07-18T23:18:23.000Z","o":"T","h":true},{"t":"2026-07-20T10:34:25.000Z","o":"T","h":true},{"t":"2026-07-20T11:31:35.000Z","o":"T","h":true},{"t":"2026-07-21T07:44:48.000Z","o":"T","h":true},{"t":"2026-07-21T10:50:29.000Z","o":"T","h":true},{"t":"2026-07-22T17:27:51.000Z","o":"M","h":false},{"t":"2026-07-22T18:48:58.000Z","o":"T","h":true},{"t":"2026-07-23T21:52:31.000Z","o":"T","h":true},{"t":"2026-07-23T23:30:21.000Z","o":"D","h":false},{"t":"2026-07-24T04:51:18.000Z","o":"T","h":true},{"t":"2026-07-24T13:31:16.000Z","o":"D","h":true},{"t":"2026-07-24T19:37:14.000Z","o":"T","h":true},{"t":"2026-07-25T00:04:51.000Z","o":"T","h":true},{"t":"2026-07-27T12:33:13.000Z","o":"T","h":true},{"t":"2026-07-27T13:19:10.000Z","o":"T","h":true},{"t":"2026-07-28T22:54:02.000Z","o":"D","h":false},{"t":"2026-07-29T17:27:48.000Z","o":"T","h":true},{"t":"2026-07-30T21:50:54.000Z","o":"T","h":true},{"t":"2026-07-31T08:00:14.000Z","o":"T","h":true},{"t":"2026-08-01T01:08:57.000Z","o":"T","h":true},{"t":"2026-08-01T15:48:41.000Z","o":"T","h":true},{"t":"2026-08-01T23:30:17.000Z","o":"D","h":true},{"t":"2026-08-02T09:18:03.000Z","o":"T","h":true},{"t":"2026-08-02T11:00:32.000Z","o":"D","h":false},{"t":"2026-08-02T18:44:46.000Z","o":"T","h":true},{"t":"2026-08-02T20:54:05.000Z","o":"T","h":true},{"t":"2026-08-03T15:44:11.000Z","o":"D","h":false},{"t":"2026-08-04T20:01:19.000Z","o":"T","h":true},{"t":"2026-08-05T05:29:14.000Z","o":"T","h":true},{"t":"2026-08-05T09:45:43.000Z","o":"T","h":true},{"t":"2026-08-05T16:26:11.000Z","o":"T","h":true},{"t":"2026-08-05T19:45:15.000Z","o":"T","h":true},{"t":"2026-08-06T12:20:05.000Z","o":"T","h":true},{"t":"2026-08-07T12:35:24.000Z","o":"D","h":false},{"t":"2026-08-07T18:42:49.000Z","o":"T","h":true},{"t":"2026-08-08T00:21:56.000Z","o":"M","h":false},{"t":"2026-08-08T10:39:19.000Z","o":"T","h":true},{"t":"2026-08-08T20:19:44.000Z","o":"D","h":false},{"t":"2026-08-10T15:38:46.000Z","o":"T","h":true},{"t":"2026-08-10T17:34:47.000Z","o":"T","h":true},{"t":"2026-08-10T21:08:38.000Z","o":"D","h":false},{"t":"2026-08-12T16:36:14.000Z","o":"T","h":true},{"t":"2026-08-12T19:51:25.000Z","o":"M","h":false},{"t":"2026-08-12T20:02:48.000Z","o":"D","h":false},{"t":"2026-08-13T09:45:33.000Z","o":"M","h":true},{"t":"2026-08-13T14:51:31.000Z","o":"M","h":false},{"t":"2026-08-14T16:32:44.000Z","o":"M","h":true},{"t":"2026-08-14T21:22:33.000Z","o":"T","h":true},{"t":"2026-08-19T13:28:40.000Z","o":"M","h":true},{"t":"2026-08-22T11:13:54.000Z","o":"D","h":true},{"t":"2026-08-23T13:51:03.000Z","o":"M","h":false},{"t":"2026-08-28T19:28:20.000Z","o":"M","h":false}],"Ironvale":[{"t":"2026-06-29T15:17:16.000Z","o":"D","h":false},{"t":"2026-06-29T19:32:50.000Z","o":"T","h":true},{"t":"2026-06-30T08:58:47.000Z","o":"T","h":true},{"t":"2026-07-02T06:53:56.000Z","o":"T","h":true},{"t":"2026-07-02T20:42:46.000Z","o":"T","h":true},{"t":"2026-07-03T04:14:14.000Z","o":"T","h":true},{"t":"2026-07-04T06:24:12.000Z","o":"T","h":true},{"t":"2026-07-05T17:57:30.000Z","o":"D","h":true},{"t":"2026-07-06T11:23:47.000Z","o":"T","h":true},{"t":"2026-07-07T14:18:27.000Z","o":"D","h":false},{"t":"2026-07-07T21:30:31.000Z","o":"T","h":true},{"t":"2026-07-08T20:06:49.000Z","o":"D","h":false},{"t":"2026-07-09T02:34:45.000Z","o":"D","h":false},{"t":"2026-07-12T15:27:03.000Z","o":"T","h":true},{"t":"2026-07-12T19:09:14.000Z","o":"T","h":true},{"t":"2026-07-12T23:10:53.000Z","o":"T","h":true},{"t":"2026-07-13T20:23:15.000Z","o":"T","h":true},{"t":"2026-07-14T20:05:02.000Z","o":"T","h":true},{"t":"2026-07-14T22:15:09.000Z","o":"D","h":false},{"t":"2026-07-15T09:40:33.000Z","o":"T","h":true},{"t":"2026-07-15T19:43:28.000Z","o":"T","h":true},{"t":"2026-07-17T17:53:14.000Z","o":"T","h":true},{"t":"2026-07-18T14:47:37.000Z","o":"T","h":true},{"t":"2026-07-18T18:21:28.000Z","o":"T","h":true},{"t":"2026-07-19T17:07:05.000Z","o":"T","h":true},{"t":"2026-07-22T10:46:54.000Z","o":"T","h":true},{"t":"2026-07-22T19:52:59.000Z","o":"D","h":false},{"t":"2026-07-24T13:32:05.000Z","o":"D","h":true},{"t":"2026-07-24T19:11:13.000Z","o":"T","h":true},{"t":"2026-07-25T07:33:50.000Z","o":"T","h":true},{"t":"2026-07-25T09:17:24.000Z","o":"T","h":true},{"t":"2026-07-26T06:17:25.000Z","o":"T","h":true},{"t":"2026-07-26T22:56:29.000Z","o":"T","h":true},{"t":"2026-07-27T03:38:33.000Z","o":"T","h":true},{"t":"2026-07-27T15:46:13.000Z","o":"D","h":false},{"t":"2026-07-27T17:33:54.000Z","o":"T","h":true},{"t":"2026-07-28T21:29:25.000Z","o":"T","h":true},{"t":"2026-07-31T18:20:58.000Z","o":"M","h":false},{"t":"2026-08-02T13:55:53.000Z","o":"T","h":true},{"t":"2026-08-02T15:56:34.000Z","o":"T","h":true},{"t":"2026-08-05T11:36:45.000Z","o":"T","h":true},{"t":"2026-08-05T11:37:04.000Z","o":"T","h":true},{"t":"2026-08-05T21:36:50.000Z","o":"T","h":true},{"t":"2026-08-07T17:50:31.000Z","o":"T","h":true},{"t":"2026-08-08T11:33:45.000Z","o":"T","h":true},{"t":"2026-08-09T00:13:23.000Z","o":"T","h":true},{"t":"2026-08-09T18:47:54.000Z","o":"D","h":false},{"t":"2026-08-09T20:51:14.000Z","o":"T","h":true},{"t":"2026-08-10T18:48:57.000Z","o":"D","h":false},{"t":"2026-08-10T19:35:50.000Z","o":"T","h":true},{"t":"2026-08-10T22:27:46.000Z","o":"T","h":true},{"t":"2026-08-12T18:50:45.000Z","o":"T","h":true},{"t":"2026-08-12T19:51:16.000Z","o":"D","h":false},{"t":"2026-08-14T09:04:58.000Z","o":"M","h":true},{"t":"2026-08-14T10:23:31.000Z","o":"T","h":true},{"t":"2026-08-14T11:34:59.000Z","o":"D","h":false},{"t":"2026-08-15T20:53:11.000Z","o":"T","h":true},{"t":"2026-08-17T19:52:41.000Z","o":"T","h":true},{"t":"2026-08-18T15:29:49.000Z","o":"T","h":false},{"t":"2026-08-18T16:19:23.000Z","o":"T","h":false},{"t":"2026-08-18T22:07:14.000Z","o":"M","h":true},{"t":"2026-08-19T16:14:53.000Z","o":"D","h":true},{"t":"2026-08-19T17:41:14.000Z","o":"M","h":true},{"t":"2026-08-20T10:20:26.000Z","o":"D","h":false},{"t":"2026-08-21T16:38:31.000Z","o":"T","h":true},{"t":"2026-08-23T08:08:51.000Z","o":"T","h":true},{"t":"2026-08-23T19:05:03.000Z","o":"T","h":true},{"t":"2026-08-24T20:14:17.000Z","o":"T","h":true},{"t":"2026-08-25T13:22:34.000Z","o":"T","h":true},{"t":"2026-08-25T17:10:25.000Z","o":"T","h":true},{"t":"2026-08-26T21:22:27.000Z","o":"M","h":false},{"t":"2026-08-26T21:23:12.000Z","o":"D","h":false},{"t":"2026-08-28T19:55:11.000Z","o":"T","h":true},{"t":"2026-08-28T21:49:44.000Z","o":"T","h":false},{"t":"2026-08-28T22:43:52.000Z","o":"T","h":true},{"t":"2026-08-30T10:07:49.000Z","o":"M","h":false},{"t":"2026-08-30T16:31:22.000Z","o":"T","h":false},{"t":"2026-08-30T20:07:16.000Z","o":"T","h":false},{"t":"2026-08-31T23:28:32.000Z","o":"T","h":true},{"t":"2026-08-31T23:57:15.000Z","o":"T","h":true},{"t":"2026-09-02T13:47:56.000Z","o":"T","h":false},{"t":"2026-09-02T16:27:35.000Z","o":"T","h":false},{"t":"2026-09-03T13:41:47.000Z","o":"T","h":true},{"t":"2026-09-04T14:13:27.000Z","o":"T","h":true},{"t":"2026-09-04T15:28:18.000Z","o":"T","h":true},{"t":"2026-09-04T17:05:26.000Z","o":"T","h":false},{"t":"2026-09-04T18:48:38.000Z","o":"M","h":true},{"t":"2026-09-04T22:44:59.000Z","o":"M","h":true},{"t":"2026-09-05T15:20:01.000Z","o":"T","h":false},{"t":"2026-09-05T18:49:24.000Z","o":"D","h":false}],"Meteor Mite":[{"t":"2026-07-01T08:42:54.000Z","o":"T","h":true},{"t":"2026-07-01T15:00:12.000Z","o":"D","h":true},{"t":"2026-07-02T01:13:57.000Z","o":"T","h":true},{"t":"2026-07-02T05:44:48.000Z","o":"T","h":true},{"t":"2026-07-03T18:22:11.000Z","o":"T","h":true},{"t":"2026-07-04T08:57:14.000Z","o":"D","h":true},{"t":"2026-07-04T11:56:19.000Z","o":"D","h":false},{"t":"2026-07-04T14:47:06.000Z","o":"D","h":true},{"t":"2026-07-04T23:34:33.000Z","o":"T","h":true},{"t":"2026-07-05T12:18:08.000Z","o":"T","h":true},{"t":"2026-07-05T18:17:48.000Z","o":"T","h":true},{"t":"2026-07-06T15:15:25.000Z","o":"T","h":true},{"t":"2026-07-07T11:44:18.000Z","o":"T","h":true},{"t":"2026-07-07T17:17:53.000Z","o":"T","h":true},{"t":"2026-07-07T22:59:50.000Z","o":"T","h":true},{"t":"2026-07-08T08:48:28.000Z","o":"T","h":true},{"t":"2026-07-08T19:44:26.000Z","o":"T","h":true},{"t":"2026-07-10T18:18:36.000Z","o":"D","h":false},{"t":"2026-07-10T18:41:32.000Z","o":"T","h":true},{"t":"2026-07-11T20:30:50.000Z","o":"D","h":true},{"t":"2026-07-12T13:21:34.000Z","o":"T","h":true},{"t":"2026-07-12T18:51:07.000Z","o":"T","h":true},{"t":"2026-07-12T23:59:37.000Z","o":"D","h":false},{"t":"2026-07-13T09:14:08.000Z","o":"T","h":true},{"t":"2026-07-13T10:47:56.000Z","o":"D","h":true},{"t":"2026-07-13T19:20:06.000Z","o":"T","h":true},{"t":"2026-07-14T07:33:38.000Z","o":"D","h":true},{"t":"2026-07-15T12:34:51.000Z","o":"T","h":true},{"t":"2026-07-17T21:01:54.000Z","o":"T","h":true},{"t":"2026-07-19T08:46:41.000Z","o":"T","h":true},{"t":"2026-07-19T09:10:13.000Z","o":"T","h":true},{"t":"2026-07-19T20:59:04.000Z","o":"D","h":false},{"t":"2026-07-19T22:48:11.000Z","o":"D","h":false},{"t":"2026-07-20T16:25:44.000Z","o":"T","h":true},{"t":"2026-07-20T18:21:50.000Z","o":"T","h":true},{"t":"2026-07-23T09:48:02.000Z","o":"M","h":true},{"t":"2026-07-23T10:42:52.000Z","o":"D","h":true},{"t":"2026-07-23T19:32:17.000Z","o":"T","h":true},{"t":"2026-07-23T21:19:36.000Z","o":"T","h":true},{"t":"2026-07-24T12:33:04.000Z","o":"T","h":true},{"t":"2026-07-24T17:16:09.000Z","o":"D","h":true},{"t":"2026-07-24T19:13:38.000Z","o":"D","h":true},{"t":"2026-07-25T09:08:32.000Z","o":"T","h":true},{"t":"2026-07-25T10:36:35.000Z","o":"T","h":true},{"t":"2026-07-27T00:47:55.000Z","o":"T","h":true},{"t":"2026-07-27T16:10:33.000Z","o":"T","h":true},{"t":"2026-07-27T18:13:01.000Z","o":"T","h":true},{"t":"2026-07-28T19:06:04.000Z","o":"T","h":true},{"t":"2026-07-28T19:46:04.000Z","o":"M","h":true},{"t":"2026-07-28T22:30:59.000Z","o":"T","h":true},{"t":"2026-07-30T17:10:19.000Z","o":"T","h":true},{"t":"2026-07-30T18:51:08.000Z","o":"D","h":false},{"t":"2026-07-30T21:25:11.000Z","o":"T","h":true},{"t":"2026-08-01T10:14:28.000Z","o":"T","h":true},{"t":"2026-08-02T15:46:42.000Z","o":"T","h":true},{"t":"2026-08-02T19:12:14.000Z","o":"D","h":true},{"t":"2026-08-03T19:34:01.000Z","o":"T","h":true},{"t":"2026-08-04T20:34:08.000Z","o":"T","h":true},{"t":"2026-08-05T13:47:54.000Z","o":"D","h":true},{"t":"2026-08-05T14:53:04.000Z","o":"T","h":true},{"t":"2026-08-06T01:14:32.000Z","o":"D","h":false},{"t":"2026-08-06T01:21:33.000Z","o":"T","h":true},{"t":"2026-08-06T05:02:01.000Z","o":"D","h":false},{"t":"2026-08-06T16:20:56.000Z","o":"T","h":true},{"t":"2026-08-08T07:54:09.000Z","o":"T","h":true},{"t":"2026-08-08T16:55:19.000Z","o":"T","h":true},{"t":"2026-08-08T20:43:45.000Z","o":"T","h":true},{"t":"2026-08-10T14:03:36.000Z","o":"D","h":true},{"t":"2026-08-10T21:15:00.000Z","o":"T","h":true},{"t":"2026-08-11T06:41:14.000Z","o":"T","h":true},{"t":"2026-08-12T19:04:32.000Z","o":"D","h":false},{"t":"2026-08-13T13:43:10.000Z","o":"M","h":false},{"t":"2026-08-13T15:12:38.000Z","o":"M","h":true},{"t":"2026-08-14T07:26:28.000Z","o":"M","h":true},{"t":"2026-08-15T15:18:48.000Z","o":"T","h":true},{"t":"2026-08-15T19:40:01.000Z","o":"T","h":true},{"t":"2026-08-16T11:16:17.000Z","o":"M","h":true},{"t":"2026-08-18T07:37:03.000Z","o":"D","h":true},{"t":"2026-08-19T17:30:34.000Z","o":"T","h":true},{"t":"2026-08-20T16:41:50.000Z","o":"M","h":true},{"t":"2026-08-22T20:53:13.000Z","o":"M","h":false},{"t":"2026-08-27T20:03:12.000Z","o":"D","h":false},{"t":"2026-08-29T09:15:52.000Z","o":"M","h":true},{"t":"2026-09-05T15:06:20.000Z","o":"M","h":false}],"The Gale":[{"t":"2026-06-29T06:51:38.000Z","o":"T","h":true},{"t":"2026-06-29T08:33:37.000Z","o":"T","h":true},{"t":"2026-06-29T11:19:23.000Z","o":"T","h":true},{"t":"2026-06-29T17:41:12.000Z","o":"T","h":true},{"t":"2026-06-30T23:54:48.000Z","o":"D","h":false},{"t":"2026-07-01T15:00:18.000Z","o":"T","h":true},{"t":"2026-07-02T13:53:08.000Z","o":"T","h":true},{"t":"2026-07-03T14:07:31.000Z","o":"T","h":true},{"t":"2026-07-03T20:04:50.000Z","o":"T","h":true},{"t":"2026-07-04T14:47:17.000Z","o":"T","h":true},{"t":"2026-07-04T23:33:02.000Z","o":"M","h":true},{"t":"2026-07-05T12:17:37.000Z","o":"D","h":true},{"t":"2026-07-05T14:05:27.000Z","o":"T","h":true},{"t":"2026-07-06T08:04:12.000Z","o":"T","h":true},{"t":"2026-07-06T15:15:02.000Z","o":"D","h":true},{"t":"2026-07-06T20:01:21.000Z","o":"T","h":true},{"t":"2026-07-07T11:43:40.000Z","o":"D","h":true},{"t":"2026-07-07T21:36:08.000Z","o":"T","h":true},{"t":"2026-07-08T15:03:29.000Z","o":"D","h":false},{"t":"2026-07-08T18:26:02.000Z","o":"T","h":true},{"t":"2026-07-11T20:31:04.000Z","o":"T","h":true},{"t":"2026-07-12T07:52:06.000Z","o":"T","h":true},{"t":"2026-07-12T08:23:33.000Z","o":"T","h":true},{"t":"2026-07-12T10:50:58.000Z","o":"T","h":true},{"t":"2026-07-12T11:43:13.000Z","o":"T","h":true},{"t":"2026-07-13T00:33:26.000Z","o":"T","h":true},{"t":"2026-07-13T11:22:01.000Z","o":"T","h":true},{"t":"2026-07-13T11:29:44.000Z","o":"T","h":true},{"t":"2026-07-13T19:19:32.000Z","o":"D","h":true},{"t":"2026-07-14T07:33:59.000Z","o":"T","h":true},{"t":"2026-07-15T12:34:38.000Z","o":"D","h":true},{"t":"2026-07-15T14:37:40.000Z","o":"T","h":true},{"t":"2026-07-16T09:05:24.000Z","o":"T","h":true},{"t":"2026-07-16T13:31:55.000Z","o":"T","h":true},{"t":"2026-07-17T04:05:44.000Z","o":"T","h":true},{"t":"2026-07-17T07:30:26.000Z","o":"T","h":true},{"t":"2026-07-17T21:01:45.000Z","o":"D","h":true},{"t":"2026-07-18T08:46:43.000Z","o":"T","h":true},{"t":"2026-07-21T17:07:51.000Z","o":"D","h":false},{"t":"2026-07-21T18:47:46.000Z","o":"T","h":true},{"t":"2026-07-22T09:43:31.000Z","o":"D","h":false},{"t":"2026-07-22T10:22:18.000Z","o":"T","h":true},{"t":"2026-07-22T20:35:28.000Z","o":"T","h":true},{"t":"2026-07-23T09:49:35.000Z","o":"T","h":true},{"t":"2026-07-23T10:43:32.000Z","o":"T","h":true},{"t":"2026-07-24T15:01:41.000Z","o":"M","h":false},{"t":"2026-07-24T17:04:24.000Z","o":"T","h":true},{"t":"2026-07-24T19:13:55.000Z","o":"T","h":true},{"t":"2026-07-24T23:04:18.000Z","o":"T","h":true},{"t":"2026-07-25T07:06:26.000Z","o":"T","h":true},{"t":"2026-07-26T19:53:47.000Z","o":"T","h":true},{"t":"2026-07-26T20:39:27.000Z","o":"T","h":true},{"t":"2026-07-27T18:48:48.000Z","o":"T","h":true},{"t":"2026-07-28T14:38:54.000Z","o":"T","h":true},{"t":"2026-07-28T19:47:37.000Z","o":"T","h":true},{"t":"2026-07-28T21:42:42.000Z","o":"T","h":true},{"t":"2026-07-29T00:27:51.000Z","o":"T","h":true},{"t":"2026-07-31T17:55:24.000Z","o":"T","h":true},{"t":"2026-07-31T20:14:23.000Z","o":"T","h":true},{"t":"2026-07-31T21:24:41.000Z","o":"T","h":true},{"t":"2026-08-01T13:08:06.000Z","o":"T","h":true},{"t":"2026-08-02T01:31:23.000Z","o":"T","h":true},{"t":"2026-08-02T14:20:41.000Z","o":"M","h":true},{"t":"2026-08-02T15:46:06.000Z","o":"D","h":true},{"t":"2026-08-02T19:12:33.000Z","o":"T","h":true},{"t":"2026-08-03T01:29:09.000Z","o":"T","h":true},{"t":"2026-08-03T08:29:43.000Z","o":"D","h":true},{"t":"2026-08-03T19:59:51.000Z","o":"T","h":true},{"t":"2026-08-04T12:27:38.000Z","o":"T","h":true},{"t":"2026-08-04T16:41:04.000Z","o":"T","h":true},{"t":"2026-08-05T13:48:23.000Z","o":"T","h":true},{"t":"2026-08-06T01:21:12.000Z","o":"D","h":true},{"t":"2026-08-06T19:39:10.000Z","o":"D","h":false},{"t":"2026-08-09T06:35:15.000Z","o":"T","h":true},{"t":"2026-08-09T14:26:57.000Z","o":"T","h":true},{"t":"2026-08-09T22:26:30.000Z","o":"T","h":true},{"t":"2026-08-09T23:02:22.000Z","o":"T","h":true},{"t":"2026-08-09T23:37:16.000Z","o":"T","h":true},{"t":"2026-08-10T14:04:33.000Z","o":"T","h":true},{"t":"2026-08-11T11:10:29.000Z","o":"T","h":true},{"t":"2026-08-11T14:51:59.000Z","o":"M","h":true},{"t":"2026-08-11T19:01:04.000Z","o":"T","h":true},{"t":"2026-08-12T19:04:58.000Z","o":"M","h":false},{"t":"2026-08-13T13:44:48.000Z","o":"M","h":false},{"t":"2026-08-13T15:13:40.000Z","o":"T","h":true},{"t":"2026-08-14T07:27:29.000Z","o":"T","h":true},{"t":"2026-08-14T11:45:35.000Z","o":"T","h":true},{"t":"2026-08-14T19:42:51.000Z","o":"D","h":false},{"t":"2026-08-14T22:43:52.000Z","o":"T","h":true},{"t":"2026-08-15T15:18:08.000Z","o":"D","h":true},{"t":"2026-08-16T09:45:06.000Z","o":"T","h":true},{"t":"2026-08-16T21:33:19.000Z","o":"D","h":false},{"t":"2026-08-16T23:19:40.000Z","o":"T","h":true},{"t":"2026-08-17T17:03:22.000Z","o":"T","h":true},{"t":"2026-08-17T19:22:00.000Z","o":"T","h":true},{"t":"2026-08-17T19:43:35.000Z","o":"D","h":false},{"t":"2026-08-17T20:56:36.000Z","o":"T","h":true},{"t":"2026-08-17T22:35:48.000Z","o":"T","h":true},{"t":"2026-08-18T07:37:13.000Z","o":"T","h":true},{"t":"2026-08-18T10:47:53.000Z","o":"T","h":true},{"t":"2026-08-18T18:20:35.000Z","o":"D","h":false},{"t":"2026-08-19T17:29:31.000Z","o":"M","h":true},{"t":"2026-08-20T12:35:45.000Z","o":"D","h":true},{"t":"2026-08-21T17:10:20.000Z","o":"T","h":true},{"t":"2026-08-21T21:58:31.000Z","o":"T","h":true},{"t":"2026-08-22T11:45:46.000Z","o":"T","h":true},{"t":"2026-08-22T12:25:16.000Z","o":"T","h":true},{"t":"2026-08-22T20:52:11.000Z","o":"M","h":false},{"t":"2026-08-23T10:07:44.000Z","o":"T","h":true},{"t":"2026-08-23T18:35:05.000Z","o":"T","h":true},{"t":"2026-08-24T17:11:19.000Z","o":"T","h":true},{"t":"2026-08-24T17:12:25.000Z","o":"M","h":false},{"t":"2026-08-24T19:00:05.000Z","o":"M","h":true},{"t":"2026-08-25T01:53:53.000Z","o":"T","h":true},{"t":"2026-08-25T11:19:32.000Z","o":"T","h":true},{"t":"2026-08-25T12:09:25.000Z","o":"D","h":true},{"t":"2026-08-26T09:41:10.000Z","o":"T","h":true},{"t":"2026-08-26T12:33:56.000Z","o":"T","h":true},{"t":"2026-08-28T05:10:44.000Z","o":"T","h":true},{"t":"2026-08-28T06:39:42.000Z","o":"D","h":false},{"t":"2026-08-28T17:04:03.000Z","o":"T","h":true},{"t":"2026-08-28T17:28:35.000Z","o":"T","h":true},{"t":"2026-08-28T21:16:01.000Z","o":"T","h":true},{"t":"2026-08-29T09:17:56.000Z","o":"T","h":true},{"t":"2026-08-30T05:06:19.000Z","o":"T","h":true},{"t":"2026-08-30T07:21:47.000Z","o":"D","h":false},{"t":"2026-08-30T13:51:24.000Z","o":"D","h":false},{"t":"2026-08-30T18:26:43.000Z","o":"T","h":true},{"t":"2026-08-30T19:28:42.000Z","o":"T","h":true},{"t":"2026-08-30T19:40:55.000Z","o":"T","h":true},{"t":"2026-08-31T10:37:05.000Z","o":"D","h":true},{"t":"2026-08-31T17:40:43.000Z","o":"D","h":false},{"t":"2026-09-01T07:56:15.000Z","o":"T","h":true},{"t":"2026-09-01T17:56:55.000Z","o":"T","h":true},{"t":"2026-09-01T18:57:36.000Z","o":"T","h":true},{"t":"2026-09-01T20:00:19.000Z","o":"M","h":false},{"t":"2026-09-02T15:29:56.000Z","o":"T","h":true},{"t":"2026-09-03T12:40:58.000Z","o":"T","h":true},{"t":"2026-09-03T16:57:40.000Z","o":"T","h":true},{"t":"2026-09-03T22:24:03.000Z","o":"M","h":false},{"t":"2026-09-04T06:27:43.000Z","o":"T","h":true},{"t":"2026-09-04T07:14:09.000Z","o":"T","h":true},{"t":"2026-09-04T08:52:53.000Z","o":"T","h":true},{"t":"2026-09-04T16:33:38.000Z","o":"T","h":true},{"t":"2026-09-04T21:48:59.000Z","o":"T","h":true},{"t":"2026-09-05T12:15:55.000Z","o":"T","h":true},{"t":"2026-09-05T13:13:32.000Z","o":"T","h":true},{"t":"2026-09-05T16:01:03.000Z","o":"T","h":true},{"t":"2026-09-05T17:57:10.000Z","o":"T","h":true},{"t":"2026-09-05T18:20:14.000Z","o":"D","h":false},{"t":"2026-09-05T19:57:47.000Z","o":"T","h":true}],"The Undertow":[{"t":"2026-06-29T05:43:24.000Z","o":"T","h":true},{"t":"2026-06-29T07:26:38.000Z","o":"T","h":true},{"t":"2026-06-29T13:52:31.000Z","o":"D","h":false},{"t":"2026-06-29T14:31:58.000Z","o":"T","h":true},{"t":"2026-06-29T15:17:23.000Z","o":"T","h":true},{"t":"2026-06-29T18:18:10.000Z","o":"D","h":false},{"t":"2026-06-30T08:58:07.000Z","o":"D","h":false},{"t":"2026-07-01T10:44:03.000Z","o":"T","h":true},{"t":"2026-07-01T19:24:47.000Z","o":"T","h":true},{"t":"2026-07-03T17:30:31.000Z","o":"T","h":true},{"t":"2026-07-03T17:45:50.000Z","o":"T","h":true},{"t":"2026-07-04T12:29:07.000Z","o":"T","h":true},{"t":"2026-07-06T16:36:56.000Z","o":"T","h":true},{"t":"2026-07-07T14:17:51.000Z","o":"D","h":true},{"t":"2026-07-07T17:09:39.000Z","o":"T","h":true},{"t":"2026-07-07T17:19:59.000Z","o":"T","h":true},{"t":"2026-07-08T20:07:15.000Z","o":"T","h":true},{"t":"2026-07-08T21:25:46.000Z","o":"T","h":true},{"t":"2026-07-09T02:35:09.000Z","o":"T","h":true},{"t":"2026-07-09T08:37:39.000Z","o":"D","h":true},{"t":"2026-07-09T21:32:54.000Z","o":"T","h":true},{"t":"2026-07-10T07:39:09.000Z","o":"T","h":true},{"t":"2026-07-11T16:10:26.000Z","o":"T","h":true},{"t":"2026-07-13T04:01:23.000Z","o":"T","h":true},{"t":"2026-07-13T20:21:43.000Z","o":"M","h":false},{"t":"2026-07-15T13:04:25.000Z","o":"T","h":true},{"t":"2026-07-15T15:53:01.000Z","o":"T","h":true},{"t":"2026-07-16T17:44:06.000Z","o":"T","h":true},{"t":"2026-07-16T19:56:53.000Z","o":"T","h":true},{"t":"2026-07-16T21:35:41.000Z","o":"T","h":true},{"t":"2026-07-17T17:52:09.000Z","o":"D","h":false},{"t":"2026-07-17T17:55:48.000Z","o":"D","h":false},{"t":"2026-07-17T18:02:47.000Z","o":"T","h":true},{"t":"2026-07-17T18:47:57.000Z","o":"T","h":true},{"t":"2026-07-18T07:43:41.000Z","o":"T","h":true},{"t":"2026-07-20T01:36:48.000Z","o":"D","h":true},{"t":"2026-07-20T06:57:55.000Z","o":"D","h":true},{"t":"2026-07-20T16:20:58.000Z","o":"T","h":true},{"t":"2026-07-20T18:02:38.000Z","o":"T","h":true},{"t":"2026-07-20T18:09:53.000Z","o":"T","h":true},{"t":"2026-07-22T18:23:01.000Z","o":"T","h":true},{"t":"2026-07-22T22:35:54.000Z","o":"T","h":true},{"t":"2026-07-23T15:28:03.000Z","o":"T","h":true},{"t":"2026-07-23T19:02:28.000Z","o":"T","h":true},{"t":"2026-07-25T12:16:59.000Z","o":"T","h":true},{"t":"2026-07-26T00:32:41.000Z","o":"T","h":true},{"t":"2026-07-26T06:17:17.000Z","o":"D","h":false},{"t":"2026-07-26T19:45:10.000Z","o":"T","h":true},{"t":"2026-07-27T08:54:53.000Z","o":"T","h":true},{"t":"2026-07-27T11:16:35.000Z","o":"T","h":true},{"t":"2026-07-28T09:32:59.000Z","o":"T","h":true},{"t":"2026-07-28T17:52:18.000Z","o":"T","h":true},{"t":"2026-07-29T04:04:29.000Z","o":"T","h":true},{"t":"2026-07-29T06:31:41.000Z","o":"T","h":true},{"t":"2026-07-29T16:57:08.000Z","o":"T","h":true},{"t":"2026-07-31T18:22:30.000Z","o":"T","h":true},{"t":"2026-07-31T20:07:05.000Z","o":"D","h":false},{"t":"2026-08-01T08:07:00.000Z","o":"D","h":false},{"t":"2026-08-01T14:05:49.000Z","o":"T","h":true},{"t":"2026-08-01T18:47:54.000Z","o":"T","h":true},{"t":"2026-08-04T10:25:25.000Z","o":"T","h":true},{"t":"2026-08-04T12:43:31.000Z","o":"D","h":true},{"t":"2026-08-05T17:45:09.000Z","o":"T","h":true},{"t":"2026-08-05T18:18:33.000Z","o":"T","h":true},{"t":"2026-08-05T20:54:54.000Z","o":"D","h":false},{"t":"2026-08-06T00:49:55.000Z","o":"T","h":true},{"t":"2026-08-07T04:26:56.000Z","o":"D","h":false},{"t":"2026-08-07T10:29:59.000Z","o":"T","h":true},{"t":"2026-08-07T19:51:00.000Z","o":"T","h":true},{"t":"2026-08-07T22:12:57.000Z","o":"T","h":true},{"t":"2026-08-07T23:13:18.000Z","o":"T","h":true},{"t":"2026-08-08T13:58:38.000Z","o":"T","h":true},{"t":"2026-08-10T18:49:29.000Z","o":"T","h":true},{"t":"2026-08-10T19:45:14.000Z","o":"T","h":true},{"t":"2026-08-11T18:58:01.000Z","o":"D","h":false},{"t":"2026-08-12T09:04:56.000Z","o":"M","h":false},{"t":"2026-08-13T11:24:44.000Z","o":"M","h":true},{"t":"2026-08-13T13:28:09.000Z","o":"T","h":true},{"t":"2026-08-13T15:55:03.000Z","o":"T","h":true},{"t":"2026-08-13T18:44:20.000Z","o":"M","h":true},{"t":"2026-08-14T02:53:00.000Z","o":"M","h":false},{"t":"2026-08-14T10:22:29.000Z","o":"M","h":false},{"t":"2026-08-16T13:46:27.000Z","o":"D","h":false},{"t":"2026-08-17T14:10:18.000Z","o":"D","h":false},{"t":"2026-08-17T19:07:03.000Z","o":"T","h":true},{"t":"2026-08-18T16:18:10.000Z","o":"M","h":true},{"t":"2026-08-21T16:45:07.000Z","o":"M","h":true},{"t":"2026-08-27T23:18:46.000Z","o":"M","h":true},{"t":"2026-09-05T15:17:47.000Z","o":"M","h":true}],"Vesper":[{"t":"2026-06-29T00:05:14.000Z","o":"T","h":true},{"t":"2026-06-30T15:05:59.000Z","o":"D","h":false},{"t":"2026-06-30T19:17:35.000Z","o":"T","h":true},{"t":"2026-07-01T13:29:24.000Z","o":"T","h":true},{"t":"2026-07-01T19:25:00.000Z","o":"T","h":true},{"t":"2026-07-01T20:17:39.000Z","o":"T","h":true},{"t":"2026-07-02T08:43:41.000Z","o":"T","h":true},{"t":"2026-07-02T15:38:56.000Z","o":"T","h":true},{"t":"2026-07-03T07:28:48.000Z","o":"T","h":true},{"t":"2026-07-03T14:51:08.000Z","o":"T","h":true},{"t":"2026-07-03T20:11:11.000Z","o":"D","h":false},{"t":"2026-07-04T01:00:59.000Z","o":"T","h":true},{"t":"2026-07-04T14:16:59.000Z","o":"T","h":true},{"t":"2026-07-05T22:04:58.000Z","o":"D","h":true},{"t":"2026-07-06T08:46:30.000Z","o":"T","h":true},{"t":"2026-07-07T02:00:13.000Z","o":"M","h":false},{"t":"2026-07-07T18:39:49.000Z","o":"T","h":true},{"t":"2026-07-07T20:56:40.000Z","o":"T","h":true},{"t":"2026-07-08T17:10:39.000Z","o":"T","h":true},{"t":"2026-07-09T23:00:48.000Z","o":"T","h":true},{"t":"2026-07-11T13:47:05.000Z","o":"T","h":true},{"t":"2026-07-11T14:16:15.000Z","o":"D","h":false},{"t":"2026-07-11T15:03:21.000Z","o":"T","h":true},{"t":"2026-07-11T21:20:45.000Z","o":"T","h":true},{"t":"2026-07-11T21:29:50.000Z","o":"D","h":false},{"t":"2026-07-12T10:55:27.000Z","o":"T","h":true},{"t":"2026-07-12T16:07:57.000Z","o":"T","h":true},{"t":"2026-07-13T02:10:23.000Z","o":"T","h":true},{"t":"2026-07-13T18:24:32.000Z","o":"T","h":true},{"t":"2026-07-13T18:39:15.000Z","o":"T","h":true},{"t":"2026-07-14T19:11:38.000Z","o":"T","h":true},{"t":"2026-07-15T12:08:45.000Z","o":"T","h":true},{"t":"2026-07-15T19:50:58.000Z","o":"T","h":true},{"t":"2026-07-15T19:57:09.000Z","o":"T","h":true},{"t":"2026-07-16T19:02:51.000Z","o":"D","h":false},{"t":"2026-07-16T21:25:42.000Z","o":"T","h":true},{"t":"2026-07-17T17:26:30.000Z","o":"T","h":true},{"t":"2026-07-17T19:27:31.000Z","o":"M","h":false},{"t":"2026-07-17T20:15:14.000Z","o":"T","h":true},{"t":"2026-07-19T13:50:44.000Z","o":"T","h":true},{"t":"2026-07-19T15:58:37.000Z","o":"T","h":true},{"t":"2026-07-19T19:37:56.000Z","o":"T","h":true},{"t":"2026-07-20T09:46:52.000Z","o":"D","h":false},{"t":"2026-07-20T10:13:04.000Z","o":"D","h":false},{"t":"2026-07-20T21:19:02.000Z","o":"T","h":true},{"t":"2026-07-22T01:55:31.000Z","o":"T","h":true},{"t":"2026-07-22T11:20:24.000Z","o":"T","h":true},{"t":"2026-07-22T11:28:07.000Z","o":"T","h":true},{"t":"2026-07-22T16:56:45.000Z","o":"T","h":true},{"t":"2026-07-22T18:22:25.000Z","o":"T","h":true},{"t":"2026-07-23T16:56:21.000Z","o":"T","h":true},{"t":"2026-07-24T01:09:01.000Z","o":"T","h":true},{"t":"2026-07-25T15:50:28.000Z","o":"T","h":true},{"t":"2026-07-25T19:14:51.000Z","o":"D","h":false},{"t":"2026-07-26T01:05:13.000Z","o":"T","h":true},{"t":"2026-07-26T23:08:01.000Z","o":"T","h":true},{"t":"2026-07-27T08:33:21.000Z","o":"T","h":true},{"t":"2026-07-27T20:46:37.000Z","o":"T","h":true},{"t":"2026-07-28T07:21:36.000Z","o":"T","h":true},{"t":"2026-07-28T11:33:09.000Z","o":"T","h":true},{"t":"2026-07-28T14:48:20.000Z","o":"T","h":true},{"t":"2026-07-29T03:31:38.000Z","o":"T","h":true},{"t":"2026-07-30T02:29:21.000Z","o":"M","h":false},{"t":"2026-07-30T07:48:26.000Z","o":"T","h":true},{"t":"2026-07-30T13:24:32.000Z","o":"T","h":true},{"t":"2026-07-30T23:17:13.000Z","o":"T","h":true},{"t":"2026-07-31T11:28:08.000Z","o":"T","h":true},{"t":"2026-07-31T16:59:59.000Z","o":"T","h":true},{"t":"2026-08-01T19:12:49.000Z","o":"D","h":false},{"t":"2026-08-04T06:44:58.000Z","o":"T","h":true},{"t":"2026-08-04T15:09:29.000Z","o":"T","h":true},{"t":"2026-08-04T15:16:10.000Z","o":"T","h":true},{"t":"2026-08-04T18:04:04.000Z","o":"T","h":true},{"t":"2026-08-05T16:50:17.000Z","o":"T","h":true},{"t":"2026-08-05T20:25:51.000Z","o":"T","h":true},{"t":"2026-08-06T05:48:50.000Z","o":"T","h":true},{"t":"2026-08-06T09:43:10.000Z","o":"T","h":true},{"t":"2026-08-06T12:15:42.000Z","o":"D","h":false},{"t":"2026-08-06T17:48:35.000Z","o":"T","h":true},{"t":"2026-08-07T12:57:50.000Z","o":"T","h":true},{"t":"2026-08-07T17:07:09.000Z","o":"T","h":true},{"t":"2026-08-07T17:55:23.000Z","o":"D","h":false},{"t":"2026-08-08T19:51:57.000Z","o":"T","h":true},{"t":"2026-08-10T02:01:40.000Z","o":"T","h":true},{"t":"2026-08-10T13:33:28.000Z","o":"D","h":true},{"t":"2026-08-11T21:00:33.000Z","o":"T","h":true},{"t":"2026-08-13T07:34:58.000Z","o":"M","h":false},{"t":"2026-08-14T02:53:46.000Z","o":"T","h":true},{"t":"2026-08-14T17:10:16.000Z","o":"M","h":false},{"t":"2026-08-15T13:02:09.000Z","o":"T","h":true},{"t":"2026-08-15T15:33:56.000Z","o":"D","h":false},{"t":"2026-08-15T20:58:08.000Z","o":"T","h":true},{"t":"2026-08-16T10:46:31.000Z","o":"M","h":false},{"t":"2026-08-16T14:05:10.000Z","o":"M","h":false},{"t":"2026-08-16T16:03:23.000Z","o":"T","h":true},{"t":"2026-08-17T08:55:21.000Z","o":"T","h":true},{"t":"2026-08-19T18:42:37.000Z","o":"M","h":true},{"t":"2026-08-23T00:10:19.000Z","o":"M","h":true},{"t":"2026-08-23T05:34:55.000Z","o":"D","h":false},{"t":"2026-08-23T20:15:38.000Z","o":"M","h":false},{"t":"2026-08-24T21:40:13.000Z","o":"D","h":true},{"t":"2026-08-26T18:09:13.000Z","o":"M","h":true},{"t":"2026-09-01T11:42:44.000Z","o":"M","h":true}]};
+  var HERO_META = {
+    "Farlight":{cat:"Went quiet", area:"Uptown", handler:"Linda Pruitt"},
+    "The Undertow":{cat:"Went quiet", area:"Harborside", handler:"Desmond Okafor"},
+    "Vesper":{cat:"Went quiet", area:"Old Town", handler:"Aunt Dot"},
+    "Meteor Mite":{cat:"Went quiet", area:"Eastgate", handler:"Kip"},
+    "The Gale":{cat:"Stayed busy", area:"Eastgate", handler:"Kip"},
+    "Ironvale":{cat:"Steady", area:"Riverside", handler:"Teresa Alvarez"}
+  };
+  var HERO_ORDER = ["Farlight","The Undertow","Vesper","Meteor Mite","The Gale","Ironvale"];
+  var RELEASE_T = Date.parse("2026-08-12T00:00:00.000Z");
+  var ACCEPTANCE_CREDIT = 0.08;
+  var REAL_RULES = {missCost:0.12, refusalCost:0.12, grace:0, drift:0, floor:0.0, awayExempt:false};
+
+  var heroGroupsEl = document.getElementById('heroGroups');
+  HERO_ORDER.forEach(function(name){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'hero-btn';
+    b.textContent = name + ' — ' + HERO_META[name].cat;
+    b.addEventListener('click', function(){ selectHero(name); });
+    heroGroupsEl.appendChild(b);
+  });
+
+  var CONTROLS_DEF = [
+    {key:'missCost', label:'Cost of a missed offer', min:0, max:0.30, step:0.01, def:0.12},
+    {key:'refusalCost', label:'Cost of a refusal', min:0, max:0.30, step:0.01, def:0.12},
+    {key:'grace', label:'Free misses before any cost', min:0, max:5, step:1, def:0},
+    {key:'drift', label:'Daily drift back toward neutral', min:0, max:0.05, step:0.005, def:0}
+  ];
+  var controlsEl = document.getElementById('controls');
+  var sliderInputs = {};
+  CONTROLS_DEF.forEach(function(c){
+    var wrap = document.createElement('div');
+    wrap.className = 'ctrl';
+    wrap.innerHTML = '<label>' + c.label + ' <span class="val" id="val-' + c.key + '">' + c.def + '</span></label>' +
+      '<input type="range" id="in-' + c.key + '" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '" value="' + c.def + '">';
+    controlsEl.appendChild(wrap);
+    sliderInputs[c.key] = wrap.querySelector('input');
+  });
+  // floor slider separate (own id already distinct via loop key 'floor')
+  var floorWrap = document.createElement('div');
+  floorWrap.className = 'ctrl';
+  floorWrap.innerHTML = '<label>Lowest the score can fall <span class="val" id="val-floor">0</span></label>' +
+    '<input type="range" id="in-floor" min="0" max="0.5" step="0.05" value="0">';
+  controlsEl.appendChild(floorWrap);
+  sliderInputs.floor = floorWrap.querySelector('input');
+
+  var checkWrap = document.createElement('div');
+  checkWrap.className = 'ctrl check';
+  checkWrap.innerHTML = '<input type="checkbox" id="in-awayExempt"><label for="in-awayExempt">No cost for offers outside their home area</label>';
+  controlsEl.appendChild(checkWrap);
+  var awayInput = checkWrap.querySelector('input');
+
+  var btnWrap = document.createElement('div');
+  btnWrap.className = 'lab-buttons';
+  btnWrap.innerHTML = '<button type="button" class="reset-btn" id="resetBtn">RESET TO TODAY’S RULES</button>';
+  controlsEl.appendChild(btnWrap);
+
+  Object.keys(sliderInputs).forEach(function(k){
+    sliderInputs[k].addEventListener('input', function(){
+      document.getElementById('val-' + k).textContent = sliderInputs[k].value;
+      redraw();
+    });
+  });
+  awayInput.addEventListener('change', redraw);
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    CONTROLS_DEF.forEach(function(c){ sliderInputs[c.key].value = c.def; document.getElementById('val-'+c.key).textContent = c.def; });
+    sliderInputs.floor.value = 0; document.getElementById('val-floor').textContent = 0;
+    awayInput.checked = false;
+    redraw();
+  });
+
+  function currentRules(){
+    return {
+      missCost: parseFloat(sliderInputs.missCost.value),
+      refusalCost: parseFloat(sliderInputs.refusalCost.value),
+      grace: parseInt(sliderInputs.grace.value, 10),
+      drift: parseFloat(sliderInputs.drift.value),
+      floor: parseFloat(sliderInputs.floor.value),
+      awayExempt: awayInput.checked
+    };
+  }
+
+  function simulate(pings, rules){
+    var score = 0.5;
+    var streak = 0;
+    var prevT = Date.parse(pings[0].t) - 86400000;
+    var points = [{t: prevT, score: score}];
+    pings.forEach(function(p){
+      var t = Date.parse(p.t);
+      var dtDays = (t - prevT) / 86400000;
+      if(rules.drift > 0 && dtDays > 0){
+        var diff = 0.5 - score;
+        var move = Math.sign(diff) * Math.min(Math.abs(diff), rules.drift * dtDays);
+        score += move;
+      }
+      if(p.o === 'T'){
+        score += ACCEPTANCE_CREDIT;
+        streak = 0;
+      } else {
+        var exempt = rules.awayExempt && !p.h;
+        if(!exempt){
+          streak += 1;
+          if(streak > rules.grace){
+            score -= (p.o === 'M' ? rules.missCost : rules.refusalCost);
+          }
+        }
+      }
+      score = Math.max(rules.floor, Math.min(1.0, score));
+      prevT = t;
+      points.push({t: t, score: score});
+    });
+    return points;
+  }
+
+  var svg = document.getElementById('chart');
+  var MARGIN = {l:58, r:14, t:14, b:56};
+  var W = 800, H = 330;
+  var plotTop = MARGIN.t, plotBottom = H - MARGIN.b - 40, plotLeft = MARGIN.l, plotRight = W - MARGIN.r;
+  var stripY = plotBottom + 22;
+
+  function xScale(t, tMin, tMax){
+    return plotLeft + (t - tMin) / (tMax - tMin) * (plotRight - plotLeft);
+  }
+  function yScale(s){
+    return plotTop + (1 - s) * (plotBottom - plotTop);
+  }
+  function fmtDate(t){
+    var d = new Date(t);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return d.getUTCDate() + ' ' + months[d.getUTCMonth()];
+  }
+  function svgEl(tag, attrs){
+    var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for(var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  var currentHero = "Farlight";
+  function selectHero(name){
+    currentHero = name;
+    Array.prototype.forEach.call(heroGroupsEl.children, function(b, i){
+      b.classList.toggle('active', HERO_ORDER[i] === name);
+    });
+    var m = HERO_META[name];
+    document.getElementById('heroSub').textContent = name + ' — home area: ' + m.area + ' — handler: ' + m.handler + ' — ' + HERO_PINGS[name].length + ' real pings on record';
+    redraw();
+  }
+
+  function redraw(){
+    var pings = HERO_PINGS[currentHero];
+    var todayPts = simulate(pings, REAL_RULES);
+    var minePts = simulate(pings, currentRules());
+    var tMin = todayPts[0].t, tMax = todayPts[todayPts.length-1].t;
+
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    // gridlines
+    [0, 0.5, 1.0].forEach(function(v){
+      var y = yScale(v);
+      svg.appendChild(svgEl('line', {x1:plotLeft, x2:plotRight, y1:y, y2:y, stroke:'var(--border)', 'stroke-width': v===0.5?1:0.6, 'stroke-dasharray': v===0.5?'4,3':'0', opacity:0.45}));
+      svg.appendChild(svgEl('text', {x:plotLeft-6, y:y+3, 'text-anchor':'end', 'font-size':'10', fill:'var(--text-soft)', 'font-family':'Space Mono,monospace'})).textContent = v===0.5?'NEUTRAL':v.toFixed(0);
+    });
+
+    // release marker
+    var rx = xScale(RELEASE_T, tMin, tMax);
+    if(rx >= plotLeft && rx <= plotRight){
+      svg.appendChild(svgEl('line', {x1:rx, x2:rx, y1:plotTop, y2:stripY+10, stroke:'var(--red)', 'stroke-width':1.5, 'stroke-dasharray':'5,3'}));
+      var relLabel = svgEl('text', {x:rx+4, y:plotTop+10, 'font-size':'10', fill:'var(--red)', 'font-family':'Space Mono,monospace', 'font-weight':'700'});
+      relLabel.textContent = '4.2 SHIPS';
+      svg.appendChild(relLabel);
+    }
+
+    function pathFor(points){
+      return points.map(function(p,i){ return (i===0?'M':'L') + xScale(p.t, tMin, tMax).toFixed(1) + ',' + yScale(p.score).toFixed(1); }).join(' ');
+    }
+    svg.appendChild(svgEl('path', {d:pathFor(todayPts), fill:'none', stroke:'var(--text)', 'stroke-width':2.4}));
+    svg.appendChild(svgEl('path', {d:pathFor(minePts), fill:'none', stroke:'var(--orange)', 'stroke-width':2.4, 'stroke-dasharray':'6,4'}));
+
+    // outcome strip
+    svg.appendChild(svgEl('line', {x1:plotLeft, x2:plotRight, y1:stripY, y2:stripY, stroke:'var(--border)', 'stroke-width':0.6, opacity:0.4}));
+    var colors = {T:'var(--green)', D:'var(--orange)', M:'var(--red)'};
+    pings.forEach(function(p){
+      var x = xScale(Date.parse(p.t), tMin, tMax);
+      var home = p.h;
+      svg.appendChild(svgEl('circle', {
+        cx:x, cy:stripY, r:3.2,
+        fill: home ? colors[p.o] : 'var(--panel)',
+        stroke: colors[p.o],
+        'stroke-width': home ? 0 : 1.6
+      }));
+    });
+
+    // axis labels
+    svg.appendChild(svgEl('text', {x:plotLeft, y:stripY+34, 'font-size':'10', fill:'var(--text-soft)', 'font-family':'Space Mono,monospace'})).textContent = fmtDate(tMin+86400000);
+    var endLabel = svgEl('text', {x:plotRight, y:stripY+34, 'text-anchor':'end', 'font-size':'10', fill:'var(--text-soft)', 'font-family':'Space Mono,monospace'});
+    endLabel.textContent = fmtDate(tMax);
+    svg.appendChild(endLabel);
+  }
+
+  selectHero("Farlight");
+
+  /* ---------------- EXHIBIT 6: ORDERS ---------------- */
+  var ORDERS = [
+    {prio:'critical', title:"Let the recent-acceptance score drift back toward neutral on its own", file:"history.py", done:"A responder who gets no pings for N days returns toward 0.5 without needing to take a job first."},
+    {prio:'high', title:"Put the proximity-reweight question on the record", file:"config.py &middot; routing.py", done:"Wen Li and the engineering manager's open question from the 4.2 wiki page has a documented, deliberate answer — and the weights match it."},
+    {prio:'high', title:"Alert on a score that's been falling for consecutive callouts", file:"history.py", done:"Support or Product can see a responder's score sliding before 5+ silent days force a handler to file a ticket."},
+    {prio:'medium', title:"Re-open the 60-second ping-wait decision with the missed-ping data in hand", file:"config.py", done:"A decision is made and recorded on the wiki, with the 2%→18% missed-rate evidence attached."},
+    {prio:'medium', title:"Confirm or formally drop Availability Confidence", file:"roadmap (owner: Helen)", done:"The Q3 roadmap status matches what actually shipped."},
+    {prio:'low', title:"Fix the filter-persistence regression", file:"console, outside dispatch-routing", done:"The 16 filter tickets stop recurring."}
+  ];
+  var ordersList = document.getElementById('ordersList');
+  var checkedState = [];
+  try{ checkedState = JSON.parse(localStorage.getItem('rook-case-file-orders') || '[]'); }catch(e){ checkedState = []; }
+  ORDERS.forEach(function(o, i){
+    var row = document.createElement('div');
+    row.className = 'order-row';
+    row.innerHTML =
+      '<input type="checkbox" id="order-' + i + '">' +
+      '<div class="order-main">' +
+        '<div class="order-top"><span class="prio ' + o.prio + '">' + o.prio.toUpperCase() + '</span><span class="order-title">' + o.title + '</span></div>' +
+        '<div class="order-done"><span class="file-chip">' + o.file + '</span><br>Done when: ' + o.done + '</div>' +
+      '</div>';
+    ordersList.appendChild(row);
+    var cb = row.querySelector('input');
+    cb.checked = !!checkedState[i];
+    row.classList.toggle('done', cb.checked);
+    cb.addEventListener('change', function(){
+      checkedState[i] = cb.checked;
+      row.classList.toggle('done', cb.checked);
+      try{ localStorage.setItem('rook-case-file-orders', JSON.stringify(checkedState)); }catch(e){}
+      updateProgress();
+    });
+  });
+  function updateProgress(){
+    var done = checkedState.filter(Boolean).length;
+    document.getElementById('progressFill').style.width = (done / ORDERS.length * 100) + '%';
+    document.getElementById('progressLabel').textContent = done + '/' + ORDERS.length + ' done';
+  }
+  updateProgress();
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var lines = ORDERS.map(function(o, i){
+      return '[' + (checkedState[i] ? 'x' : ' ') + '] (' + o.prio.toUpperCase() + ') ' + o.title + ' — ' + o.file.replace(/&middot;/g,'/') + ' — done when: ' + o.done;
+    });
+    var text = lines.join('\n');
+    var btn = document.getElementById('copyBtn');
+    function flash(msg){ var old = btn.textContent; btn.textContent = msg; setTimeout(function(){ btn.textContent = old; }, 1500); }
+    try{
+      navigator.clipboard.writeText(text).then(function(){ flash('COPIED!'); }, function(){ flash('COPY FAILED'); });
+    }catch(e){ flash('COPY FAILED'); }
+  });
+
+  /* ---------------- EXHIBIT 7: LOOSE ENDS ---------------- */
+  var LOOSE = [
+    {t:"The four responders' actual live recent-acceptance scores", body:"Would confirm whether their scores have genuinely bottomed out. They live only in-memory inside the dispatch service — not in any database or wiki page.", ask:"Wen Li"},
+    {t:"Whether capability-tag mismatches play any part", body:"Capability tags aren't tracked in the database or the wiki, so this axis can't be checked from the data available here.", ask:"Wen Li / Marcus Oyelaran"},
+    {t:"Whether this pattern reaches beyond these four", body:"September interviews mentioned quiet/busy swings for Vesper and Meteor Mite specifically — now confirmed in the data. Unclear if anyone else is drifting the same way without yet being noticed.", ask:"Nadia Hoffmann / Ravi Menon"},
+    {t:"Whether the proximity reweight's effect on these four was a deliberate call or an oversight", body:"The engineering manager's question on the 4.2 wiki page was never answered on record.", ask:"Marcus Oyelaran / Wen Li"},
+    {t:"Availability Confidence's real status", body:"Committed to 4.2 on the roadmap, absent from what shipped — status hasn't been re-confirmed since.", ask:"Helen Achebe"}
+  ];
+  var looseList = document.getElementById('looseList');
+  LOOSE.forEach(function(l){
+    var el = document.createElement('div');
+    el.className = 'loose-item';
+    el.innerHTML = '<h3>' + l.t + '</h3><p>' + l.body + '</p><span class="ask">ASK: ' + l.ask + '</span>';
+    looseList.appendChild(el);
+  });
+
+})();
+</script>
