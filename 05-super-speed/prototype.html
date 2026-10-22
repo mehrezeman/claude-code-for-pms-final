@@ -1,0 +1,349 @@
+<title>The Fix: What They'd See</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+  :root{
+    --page-bg:#0C5A8C;
+    --dot:rgba(255,255,255,0.10);
+    --panel:#FFFFFF;
+    --panel-alt:#EEF5FA;
+    --border:#0A2A43;
+    --text:#0A2A43;
+    --text-soft:#3C5A74;
+    --yellow:#FFC72C;
+    --orange:#FF7A1A;
+    --red:#E6392B;
+    --green:#1C9A57;
+    --shadow:#0A2A43;
+    --screen-bg:#F6F8FA;
+    --screen-fg:#111;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --page-bg:#061826; --dot:rgba(255,255,255,0.06);
+      --panel:#152C42; --panel-alt:#0F2235;
+      --border:#FFC72C; --text:#F3EFE3; --text-soft:#B9C9D8; --shadow:#FFC72C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page-bg:#061826; --dot:rgba(255,255,255,0.06);
+    --panel:#152C42; --panel-alt:#0F2235;
+    --border:#FFC72C; --text:#F3EFE3; --text-soft:#B9C9D8; --shadow:#FFC72C;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background-color:var(--page-bg);
+    background-image: radial-gradient(circle, var(--dot) 1.6px, transparent 1.6px);
+    background-size: 15px 15px;
+    color:var(--text);
+    font-family:'Work Sans',system-ui,sans-serif;
+    padding-inline: max(16px, env(safe-area-inset-left,0px)) max(16px, env(safe-area-inset-right,0px));
+    padding-block:26px 50px;
+  }
+  h1,h2,h3{font-family:'Bangers',system-ui,sans-serif;letter-spacing:.5px;line-height:1.05;text-wrap:balance;}
+  .mono{font-family:'Space Mono',monospace;}
+  .wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px;}
+
+  .topbar{display:flex;justify-content:flex-end;}
+  .theme-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;background:var(--yellow);color:#1a1a1a;border:3px solid var(--border);padding:6px 12px;border-radius:999px;cursor:pointer;box-shadow:3px 3px 0 var(--shadow);}
+  .theme-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow);}
+
+  .masthead{background:var(--panel);border:4px solid var(--border);border-radius:10px;box-shadow:8px 8px 0 var(--shadow);padding:22px 22px;position:relative;overflow:hidden;}
+  .masthead .stamp{position:absolute;top:12px;right:-30px;transform:rotate(18deg);background:var(--orange);color:#1a1a1a;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:1.5px;padding:3px 34px;border:2px solid var(--border);}
+  .masthead h1{font-size:clamp(28px,6vw,42px);margin:0 0 6px;}
+  .masthead p{font-size:14px;color:var(--text-soft);margin:0;max-width:540px;}
+
+  .switcher{display:flex;gap:10px;flex-wrap:wrap;}
+  .switcher button{flex:1;min-width:160px;font-family:'Bangers',sans-serif;font-size:18px;letter-spacing:.5px;background:var(--panel-alt);border:3px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;cursor:pointer;box-shadow:4px 4px 0 var(--shadow);}
+  .switcher button.active{background:var(--border);color:var(--panel);}
+  .switcher button:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--shadow);}
+
+  .state-tabs{display:flex;gap:8px;flex-wrap:wrap;}
+  .state-tabs button{font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;letter-spacing:.5px;background:var(--panel);border:2px solid var(--border);color:var(--text);padding:7px 11px;border-radius:999px;cursor:pointer;}
+  .state-tabs button.active{background:var(--yellow);color:#1a1a1a;}
+
+  .view{display:none;flex-direction:column;gap:14px;}
+  .view.active{display:flex;}
+
+  .caption{font-size:12.5px;color:var(--panel);background:var(--border);display:inline-block;padding:4px 10px;border-radius:5px;font-family:'Space Mono',monospace;font-weight:700;align-self:flex-start;}
+
+  /* ---- device frames ---- */
+  .device-wrap{display:flex;justify-content:center;}
+  .browser{width:100%;max-width:560px;background:var(--border);border-radius:12px;box-shadow:8px 8px 0 var(--shadow);overflow:hidden;border:3px solid var(--border);}
+  .browser-bar{background:var(--panel-alt);padding:9px 12px;display:flex;align-items:center;gap:7px;border-bottom:2px solid var(--border);}
+  .browser-bar .dot{width:10px;height:10px;border-radius:50%;flex:none;}
+  .browser-bar .addr{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:3px 9px;font-family:'Space Mono',monospace;font-size:10.5px;color:var(--text-soft);margin-left:6px;}
+  .browser-screen{background:var(--screen-bg);color:var(--screen-fg);padding:18px;min-height:380px;}
+
+  .phone{width:260px;background:var(--border);border-radius:34px;box-shadow:8px 8px 0 var(--shadow);padding:10px;border:3px solid var(--border);}
+  .phone-screen{background:var(--screen-bg);color:var(--screen-fg);border-radius:24px;overflow:hidden;min-height:460px;display:flex;flex-direction:column;}
+  .phone-status{display:flex;justify-content:space-between;padding:8px 16px 2px;font-family:'Space Mono',monospace;font-size:10px;color:#555;}
+  .phone-app-bar{padding:10px 16px;font-family:'Work Sans',sans-serif;font-weight:800;font-size:15px;letter-spacing:.5px;border-bottom:1px solid #ddd;}
+  .push{display:flex;gap:9px;align-items:flex-start;background:#fff;border:1px solid #ddd;border-radius:10px;padding:10px 12px;box-shadow:0 2px 6px rgba(0,0,0,.08);}
+  .push .ic{width:22px;height:22px;border-radius:6px;background:var(--border);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .push .txt{font-size:11.5px;line-height:1.4;}
+  .push .app{font-weight:800;display:block;font-size:10.5px;}
+
+  .kip-note{border:2px dashed var(--text-soft);border-radius:8px;padding:9px 11px;font-family:'Space Mono',monospace;font-size:10.5px;color:var(--text-soft);background:var(--panel-alt);}
+  .kip-note b{display:block;font-size:9px;letter-spacing:.5px;margin-bottom:3px;opacity:.85;}
+  .phone-body{padding:18px 16px;flex:1;display:flex;flex-direction:column;gap:12px;}
+
+  /* ---- console content ---- */
+  .console-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .console-logo{font-family:'Bangers',sans-serif;font-size:17px;letter-spacing:.5px;color:#111;}
+  .console-avatar{width:26px;height:26px;border-radius:50%;background:var(--yellow);color:#1a1a1a;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .crumb{font-family:'Space Mono',monospace;font-size:10.5px;color:#777;margin-bottom:10px;}
+  .responder-card{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .responder-avatar{width:44px;height:44px;border-radius:50%;background:var(--orange);color:#1a1a1a;font-family:'Space Mono',monospace;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .responder-name{font-family:'Work Sans',sans-serif;font-weight:800;font-size:17px;color:#111;}
+  .responder-meta{font-size:11px;color:#777;}
+
+  .status-panel{border-radius:8px;padding:14px;font-size:13.5px;line-height:1.55;}
+  .status-panel.muted{background:#EDEFF1;color:#888;font-style:italic;}
+  .status-panel.warn{background:#FFF2DD;border:2px solid var(--orange);color:#6b4100;}
+  .status-panel.good{background:#E6F6ED;border:2px solid var(--green);color:#135c30;}
+  .status-panel .headline{font-family:'Work Sans',sans-serif;font-weight:800;font-size:14.5px;margin-bottom:3px;}
+
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .confirm-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;border:2px solid var(--border);background:var(--yellow);color:#1a1a1a;padding:8px 12px;border-radius:6px;cursor:pointer;}
+  .confirm-btn.secondary{background:var(--panel);}
+  .confirm-btn.done{background:var(--green);color:#fff;border-color:var(--green);cursor:default;}
+  .confirm-btn.done-no{background:var(--text-soft);color:#fff;border-color:var(--text-soft);cursor:default;}
+  .confirm-note{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--text-soft);margin-top:6px;}
+
+  /* ---- phone content ---- */
+  .phone-status-block{border-radius:8px;padding:16px;text-align:center;}
+  .phone-status-block.muted{background:#EDEFF1;color:#888;}
+  .phone-status-block.moving{background:#FFF2DD;color:#6b4100;}
+  .phone-status-block.good{background:#E6F6ED;color:#135c30;}
+  .phone-status-block .headline{font-family:'Work Sans',sans-serif;font-weight:800;font-size:15.5px;margin-bottom:4px;}
+  .phone-status-block .sub{font-size:12px;}
+
+  .annotation{border:2px dashed var(--panel);border-radius:8px;padding:9px 12px;font-size:11.5px;color:var(--panel);opacity:.9;}
+  .annotation b{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.5px;display:block;margin-bottom:3px;opacity:.85;}
+
+  footer{color:var(--panel);font-size:11px;text-align:center;opacity:.85;font-family:'Space Mono',monospace;margin-top:4px;}
+</style>
+
+<div class="wrap">
+  <div class="topbar"><button class="theme-btn" id="themeBtn" type="button">AUTO</button></div>
+
+  <header class="masthead">
+    <div class="stamp">DRAFT</div>
+    <h1>The Fix: What They'd See</h1>
+    <p>A rough click-through of Decision 1 from the brief — not Rook's real screens (none exist to copy yet). Exact wording, the alert trigger, and timing are placeholders pending Wen Li and Marcus's review.</p>
+  </header>
+
+  <div class="switcher">
+    <button id="tabKip" class="active" type="button">KIP'S CONSOLE</button>
+    <button id="tabMM" type="button">METEOR MITE'S PHONE</button>
+  </div>
+
+  <!-- KIP VIEW -->
+  <section class="view active" id="viewKip">
+    <div class="state-tabs" id="kipTabs">
+      <button data-state="0" class="active" type="button">TODAY</button>
+      <button data-state="1" type="button">IT STARTS</button>
+      <button data-state="2" type="button">AFTER</button>
+    </div>
+    <span class="caption" id="kipCaption">What Kip sees right now</span>
+    <div class="device-wrap">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="dot" style="background:#ff5f56;"></div>
+          <div class="dot" style="background:#ffbd2e;"></div>
+          <div class="dot" style="background:#27c93f;"></div>
+          <div class="addr">rook.app/console/responders/meteor-mite</div>
+        </div>
+        <div class="browser-screen">
+          <div class="console-topbar">
+            <div class="console-logo">ROOK DISPATCH</div>
+            <div class="console-avatar">K</div>
+          </div>
+          <div class="crumb">Responders &gt; Meteor Mite</div>
+          <div class="responder-card">
+            <div class="responder-avatar">MM</div>
+            <div>
+              <div class="responder-name">Meteor Mite</div>
+              <div class="responder-meta">Eastgate &middot; handler: Kip</div>
+            </div>
+          </div>
+          <div id="kipStatusArea"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METEOR MITE VIEW -->
+  <section class="view" id="viewMM">
+    <div class="state-tabs" id="mmTabs">
+      <button data-state="0" class="active" type="button">TODAY</button>
+      <button data-state="1" type="button">DAY 1</button>
+      <button data-state="2" type="button">WEEKS LATER</button>
+    </div>
+    <span class="caption" id="mmCaption">What Meteor Mite sees right now</span>
+    <div class="device-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>9:41</span><span>&#9679;&#9679;&#9679; &#128266; 100%</span></div>
+          <div class="phone-app-bar">ROOK</div>
+          <div class="phone-body" id="mmBody"></div>
+        </div>
+      </div>
+    </div>
+    <div class="annotation" id="mmAnnotation"></div>
+  </section>
+
+  <footer>Source: 05-super-speed/brief.md &middot; internal course exercise, not a real company.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var themeBtn = document.getElementById('themeBtn');
+  var themeOrder = ['system','light','dark'];
+  var themeLabels = {system:'AUTO', light:'DAY', dark:'NIGHT'};
+  var curTheme = 'system';
+  try{ curTheme = localStorage.getItem('fix-prototype-theme') || 'system'; }catch(e){}
+  function applyTheme(t){
+    if(t==='system'){ document.documentElement.removeAttribute('data-theme'); }
+    else{ document.documentElement.setAttribute('data-theme', t); }
+    themeBtn.textContent = themeLabels[t];
+  }
+  applyTheme(curTheme);
+  themeBtn.addEventListener('click', function(){
+    curTheme = themeOrder[(themeOrder.indexOf(curTheme)+1) % themeOrder.length];
+    applyTheme(curTheme);
+    try{ localStorage.setItem('fix-prototype-theme', curTheme); }catch(e){}
+  });
+
+  /* ---- top-level view switch ---- */
+  var tabKip = document.getElementById('tabKip');
+  var tabMM = document.getElementById('tabMM');
+  var viewKip = document.getElementById('viewKip');
+  var viewMM = document.getElementById('viewMM');
+  tabKip.addEventListener('click', function(){
+    tabKip.classList.add('active'); tabMM.classList.remove('active');
+    viewKip.classList.add('active'); viewMM.classList.remove('active');
+  });
+  tabMM.addEventListener('click', function(){
+    tabMM.classList.add('active'); tabKip.classList.remove('active');
+    viewMM.classList.add('active'); viewKip.classList.remove('active');
+  });
+
+  function timeNow(){
+    var t = new Date();
+    var hh = t.getHours() % 12 || 12;
+    var mm = (t.getMinutes()<10?'0':'')+t.getMinutes();
+    var ap = t.getHours() < 12 ? 'AM' : 'PM';
+    return hh + ':' + mm + ' ' + ap;
+  }
+
+  /* ---- Kip states ---- */
+  var kipStates = [
+    {
+      caption: "What Kip sees right now",
+      render: function(area){
+        area.innerHTML = '<div class="status-panel muted">Nothing. Just silence.</div>';
+      }
+    },
+    {
+      caption: "The moment it starts — new",
+      render: function(area){
+        area.innerHTML =
+          '<div class="status-panel warn">' +
+            '<div class="headline">Meteor Mite’s standing is slipping.</div>' +
+            'Flagged early — before they go fully quiet.' +
+            '<div class="btn-row">' +
+              '<button class="confirm-btn" id="kipYes" type="button">Confirm still available</button>' +
+              '<button class="confirm-btn secondary" id="kipNo" type="button">Not available</button>' +
+            '</div>' +
+            '<div class="confirm-note" id="kipNote"></div>' +
+          '</div>' +
+          '<div class="kip-note"><b>TRIGGER — PLACEHOLDER, PENDING WEN LI</b>Shown here as 2 declines/misses in a row with no take between them. The real rule, and whether this is even the right signal, is hers to set — not decided by this mockup.</div>';
+        var yes = document.getElementById('kipYes');
+        var no = document.getElementById('kipNo');
+        var note = document.getElementById('kipNote');
+        yes.addEventListener('click', function(){
+          yes.textContent = '✓ Confirmed just now'; yes.classList.add('done'); no.disabled = true; no.style.opacity = .4;
+          note.textContent = 'Updates Supply’s availability record and Kip’s own view — doesn’t change ranking. Use only if you’ve actually checked in with them. Confirmed ' + timeNow() + '.';
+        });
+        no.addEventListener('click', function(){
+          no.textContent = '✓ Marked not available'; no.classList.add('done-no'); yes.disabled = true; yes.style.opacity = .4;
+          note.textContent = 'Updates Supply’s availability record — doesn’t change ranking. Clears automatically after 24 hours, or whenever Kip updates it, so it can’t quietly go stale. Updated ' + timeNow() + '.';
+        });
+      }
+    },
+    {
+      caption: "After the fix",
+      render: function(area){
+        area.innerHTML =
+          '<div class="status-panel good">' +
+            '<div class="headline">Meteor Mite is recovering.</div>' +
+            'Back to normal rotation soon.' +
+          '</div>' +
+          '<div class="kip-note"><b>TIMING — PLACEHOLDER, PENDING WEN LI / MARCUS</b>Brief’s estimate is about 3 weeks. Not a committed date — and not what the real screen would show Kip until it’s confirmed.</div>';
+      }
+    }
+  ];
+
+  var kipTabs = document.getElementById('kipTabs');
+  var kipStatusArea = document.getElementById('kipStatusArea');
+  var kipCaption = document.getElementById('kipCaption');
+  function showKipState(i){
+    Array.prototype.forEach.call(kipTabs.children, function(b){ b.classList.toggle('active', +b.dataset.state === i); });
+    kipCaption.textContent = kipStates[i].caption;
+    kipStates[i].render(kipStatusArea);
+  }
+  Array.prototype.forEach.call(kipTabs.children, function(b){
+    b.addEventListener('click', function(){ showKipState(+b.dataset.state); });
+  });
+  showKipState(0);
+
+  /* ---- Meteor Mite states ---- */
+  var mmStates = [
+    {
+      caption: "What Meteor Mite sees right now",
+      cls: "muted", notif: null, headline: null, sub: "Nothing. No calls, no reason.",
+      feel: "Stuck, with no way out."
+    },
+    {
+      caption: "Day 1 of the fix",
+      cls: "moving", notif: "Nice — you’re back in the mix for jobs near you.",
+      headline: "You’re being considered again.", sub: "Starting today — for jobs in your area.",
+      feel: "Moving, for the first time in weeks."
+    },
+    {
+      caption: "A few weeks later",
+      cls: "good", notif: "You’re fully back in rotation for local jobs.",
+      headline: "You’re back in the running.", sub: "For local jobs in your area.",
+      feel: "Getting better on their own, without needing a lucky call first."
+    }
+  ];
+
+  var mmTabs = document.getElementById('mmTabs');
+  var mmBody = document.getElementById('mmBody');
+  var mmCaption = document.getElementById('mmCaption');
+  var mmAnnotation = document.getElementById('mmAnnotation');
+  function showMMState(i){
+    Array.prototype.forEach.call(mmTabs.children, function(b){ b.classList.toggle('active', +b.dataset.state === i); });
+    var s = mmStates[i];
+    mmCaption.textContent = s.caption;
+    mmBody.innerHTML =
+      (s.notif ? '<div class="push"><div class="ic">R</div><div class="txt"><span class="app">Rook</span>' + s.notif + '</div></div>' : '') +
+      '<div class="phone-status-block ' + s.cls + '">' +
+        (s.headline ? '<div class="headline">' + s.headline + '</div>' : '') +
+        '<div class="sub">' + s.sub + '</div>' +
+      '</div>';
+    mmAnnotation.innerHTML = '<b>WHAT THIS IS MEANT TO FEEL LIKE (not on-screen text)</b>' + s.feel;
+  }
+  Array.prototype.forEach.call(mmTabs.children, function(b){
+    b.addEventListener('click', function(){ showMMState(+b.dataset.state); });
+  });
+  showMMState(0);
+
+})();
+</script>

@@ -51,3 +51,53 @@ Build the deliverable Helen asked for (see [director-request.txt](director-reque
 1. [00-rook/case-file-4.2.html](../00-rook/case-file-4.2.html) — Exhibit 6 (Orders for the developer) and Exhibit 7 (Loose ends).
 2. [director-request.txt](director-request.txt) — Helen's original ask, to confirm sign-off.
 3. `00-rook/code/dispatch-routing/history.py` — where the actual fix lands.
+
+## 2026-10-22
+
+### Goal
+Build the actual deliverable Helen asked for — a one-pager and a clickable mockup showing the fix through Kip's and a responder's point of view — and pressure-test both before treating them as ready.
+
+### Findings
+
+| Finding | Evidence and source | Confidence | Status |
+|---|---|---|---|
+| No brief.md or prototype.html existed before this session, despite the 15 Oct log claiming the Case File already satisfied Helen's ask | `05-super-speed/` directory listing | observed | confirmed |
+| CLAUDE.md ties Meteor Mite to Kip as "same handler" — the handler Helen named directly | CLAUDE.md, Working context | observed | confirmed |
+| No real Rook console or responder-app design exists anywhere to build a realistic mockup from | rook-wiki, searched "console" and "responder app" | observed | confirmed |
+| Round 1 review of brief v1 (3 independent models) converged on 2 critical gaps: the fix still read as "a number," and the fade speed was being approved before Wen Li's intent question was answered | agent reviews, brief round 1 | observed | confirmed |
+| Round 2 review of brief v3 converged on one unanimous blocker: guardrails needed real numeric thresholds, not "must not rise" | agent reviews, brief round 2 | observed | confirmed |
+| Prototype review round 1 (3 models): all three independently flagged the same invented decisions in the mockup — a "2 misses in a row" trigger, a firm "about 3 weeks" estimate, and an unclear reused confirm button — none of which the brief had actually settled | agent reviews, prototype round 1 | observed | confirmed |
+| Prototype review round 2: one model caught a literal contradiction — a note saying "not shown to Kip" was itself inside the panel Kip's own screen displays | agent review (Haiku), verified directly against prototype.html source | observed | confirmed, fixed |
+
+### Corrections
+- **Believed** (per the 15 Oct log's own "Decisions" entry): the Case File 4.2 artifact already satisfied Helen's one-pager-plus-clickable ask. **Found:** it doesn't — it's a developer-facing investigation artifact explaining the *problem*; Helen's memo explicitly asks for the *solution* shown through a person's eyes, with no mechanism explained. **Why:** re-reading her original note against what the Case File actually contains.
+
+### Decisions
+- Scope: one prototype pair (Kip + Meteor Mite) built, but all four affected responders named in the brief — the split the student chose after the three models disagreed (2 of 3 wanted all four prototyped; the student went with the lighter-weight option and transparency in the brief instead).
+- Kept the comic-book identity for the prototype's page chrome (student's explicit choice) but switched in-screen content type to plain app-style font after review feedback that the comic font read as game-like for Meteor Mite's screens specifically.
+- No raw score shown to Meteor Mite anywhere, in any state — plain-language status only, to avoid gaming and anxiety.
+- The "Confirm still available" button never affects ranking — only the Responder Availability Record — stated explicitly in its own copy, to avoid creating a second gaming lever right next to the one this fix is supposed to close.
+- The brief's recommended fix is framed as two parts (close the miss/take point gap *and* add drift-back-to-neutral), not drift-back alone — closing the gap was added after review feedback that decay alone "just slows the bleeding."
+
+### Deliverables
+- [brief.md](brief.md) — v4 (final), the one-pager for Helen.
+- [prototype.html](prototype.html) — the clickable Kip/Meteor Mite mockup, 4 revisions. Published as a private Claude artifact: https://claude.ai/artifact/8UQhrS4ftejYCzs3jZHzSD
+
+### How to reproduce
+- Brief's numbers reuse the queries already recorded in [04-x-ray-vision/session-log.md](../04-x-ray-vision/session-log.md) (acceptance rate, missed-ping rate, home-turf share).
+- The prototype has no backend — every state is hard-coded click-through content matching brief.md's "Ideal state" table exactly; nothing in it is pulled live from the database.
+
+### Open questions
+- See [brief.md](brief.md)'s own "Open questions with owners" table — Wen Li's live-score check and her answer on original intent are still the two items gating anything from actually shipping.
+- Whether the stuck browser sign-in popup needs clearing before the student does their own live click-through — **the student's own app UI, not something fixable from here.**
+
+### Prompts and moves that worked
+- Asking for multiple independent model reviews, explicitly withheld until "aligned," turned one opinion into a real confidence signal — convergence across 3 separate models mattered more than any single review.
+- "Put it in a table on what they agree on and don't, with discrepancy and importance" turned three long paragraphs into one scannable artifact and surfaced the one real disagreement precisely.
+- Re-running the same review after each fix round (not just trusting a fix worked) caught a real regression — text labeled "hidden" that was still visible on screen.
+- "Do not ask me which one" (picking the responder) forced a grounded read of CLAUDE.md instead of a clarifying question — worth doing whenever the answer is actually inferable from what's already written down.
+
+### Start here next time
+1. [brief.md](brief.md) — the final one-pager, ready to send to Helen.
+2. The prototype: https://claude.ai/artifact/8UQhrS4ftejYCzs3jZHzSD — click through it yourself before sending.
+3. [brief.md](brief.md)'s "Open questions with owners" table — Wen Li is the one person standing between this and an actual ship decision.
