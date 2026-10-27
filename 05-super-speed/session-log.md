@@ -101,3 +101,47 @@ Build the actual deliverable Helen asked for — a one-pager and a clickable moc
 1. [brief.md](brief.md) — the final one-pager, ready to send to Helen.
 2. The prototype: https://claude.ai/artifact/8UQhrS4ftejYCzs3jZHzSD — click through it yourself before sending.
 3. [brief.md](brief.md)'s "Open questions with owners" table — Wen Li is the one person standing between this and an actual ship decision.
+
+## 2026-10-27
+
+### Goal
+Turn this investigation's own working pattern into two reusable skills — a brief sanity-checker and a multi-model stakeholder review — validate both against real course artifacts, and automate the checklist as a recurring habit.
+
+### Findings
+
+| Finding | Evidence and source | Confidence | Status |
+|---|---|---|---|
+| review-checklist, run against brief.md, found 3 pass / 1 partial: "Decisions we need from Helen" appears before the full "Problem" section, so a reader hits the ask before the full case for it | direct read of brief.md's own section order | observed | confirmed |
+| multi-model-review works with any persona and any model set, not just Helen/Rook — verified by grepping both skill files for hardcoded references | `.claude/skills/multi-model-review/` source, grep returned zero real hits | observed | confirmed |
+| Sofia Marino (Product Designer) review of brief.md: all 3 models said approve with conditions, independently converging on an issue class Helen's reviews never caught — specific UI copy and an alert threshold written as finalized when they're actually design decisions nobody looped her in on | agent reviews, Sofia round 1 (Opus/Sonnet/Haiku) | observed | confirmed |
+| A classmate's repo (fnajam325/claude-code-for-pms-final) already has a `root-cause-to-prototype` skill that may cover similar ground to this session's whole workflow | seen during the earlier wrap-up-v2 download; not read this session | observed | open |
+| Scheduling a cloud routine requires the target skill to actually be pushed to GitHub first, since the routine clones a fresh checkout — the two new skills weren't pushed until this session caught it | RemoteTrigger create workflow | observed | confirmed |
+
+### Decisions
+- Built review-checklist as a lightweight read-and-report skill only — no builder or auto-fix behavior, matching the student's original spec exactly.
+- Skipped the skill-creator's full interview/eval/benchmark loop for both skills — each had a complete spec up front and is a single-purpose checklist/orchestration skill, not a high-variance creative one — and validated by direct testing against real course artifacts instead.
+- Used Sofia Marino (Product Designer, the closest real match to "Head of Design" in the team directory) rather than inventing a title that doesn't exist in CLAUDE.md.
+- Scheduled the weekly checklist for 9am America/Toronto, converted to a fixed UTC cron; flagged that it will drift an hour after DST ends Nov 1, since cron doesn't auto-adjust for daylight saving.
+
+### Deliverables
+- [.claude/skills/review-checklist/SKILL.md](../.claude/skills/review-checklist/SKILL.md)
+- [.claude/skills/multi-model-review/SKILL.md](../.claude/skills/multi-model-review/SKILL.md) + [references/reviewer-prompt-template.md](../.claude/skills/multi-model-review/references/reviewer-prompt-template.md)
+- Cloud routine "Weekly review-checklist" (Mondays 9am Toronto / 13:00 UTC): https://claude.ai/code/routines/trig_01HtCi3qbkdk4xZKj2U9gi3o
+
+### How to reproduce
+- review-checklist's four checks and exact reporting table are fully specified in its own SKILL.md — no external state needed.
+- multi-model-review's prompt template (with placeholders for persona, document, and prior-round context) is in `references/reviewer-prompt-template.md`; fill it in once and launch one Agent call per model, all in the same message.
+
+### Open questions
+- Whether the classmate's `root-cause-to-prototype` skill duplicates or exceeds what review-checklist + multi-model-review now cover — **worth a read-before-build check, same as wrap-up v2 was.**
+- Whether Sofia's conditions (trigger threshold, screen copy, Day 1 state) get folded into brief.md as a v5, or handled separately as a design-track deliverable — **the student's own call on sequencing.**
+
+### Prompts and moves that worked
+- Grepping the actual files for hardcoded names before claiming "this is generic," instead of asserting it from memory.
+- Testing a new skill immediately against a real artifact already in the repo (brief.md) instead of inventing a synthetic test case — found a genuine, non-obvious issue on the first real run.
+- Running the exact same review mechanic (persona + multi-model) against a second, unrelated persona (Sofia vs. Helen) as the actual proof the skill generalizes, rather than just asserting it does.
+
+### Start here next time
+1. [.claude/skills/multi-model-review/](../.claude/skills/multi-model-review/SKILL.md) — the most reusable artifact from this course so far; use it on any future brief or decision.
+2. The Weekly review-checklist routine — check its first run after Nov 2, 2026.
+3. Sofia's 7 conditions from the design review (not yet applied to brief.md) — see Findings above.

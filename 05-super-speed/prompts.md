@@ -175,3 +175,27 @@ What it led to: Round 2 prototype review caught a real self-contradiction (the "
 ### 45.
 how can i fix the login i dont have a prompt to login
 What it led to: Explained the stuck Google sign-in popup was incidental (an unauthenticated browser test on my end), not something blocking the student, with steps to clear it.
+
+### 46.
+Make a skill called review-checklist. When I point it at a brief, it checks that the brief: names who owns it, says how we'll know it worked, keeps the same scope start to finish, and explains the problem before the fix.
+What it led to: Built .claude/skills/review-checklist/SKILL.md; tested it live against brief.md (3 pass, 1 partial — the ask comes before the full problem explanation).
+
+### 47.
+what other skills do you suggest i create that would make this exercise streamlined for future investigations
+What it led to: Recommended multi-model-review as the top pick, and flagged a classmate's existing root-cause-to-prototype skill worth checking before building more.
+
+### 48.
+build the multi-model review skill
+What it led to: Built .claude/skills/multi-model-review/ (SKILL.md + reviewer-prompt-template.md), generalized from the Helen-review pattern used earlier this session.
+
+### 49.
+when you built this, did you use Helen specifically? what if i wanted to run it by another persona with different models, would that work
+What it led to: Verified by grep that the skill has zero hardcoded references; confirmed both persona and model selection are independently swappable.
+
+### 50.
+ok lets test this, run the brief we built by our head of design
+What it led to: Ran brief.md past Sofia Marino (Opus/Sonnet/Haiku); all three said approve with conditions, converging on UI copy and an alert threshold being written as already-decided design calls.
+
+### 51.
+Schedule review-checklist to run every Monday morning, and let me know what it finds. Nothing needs to be ready for it to fire today. I'm setting the habit, not waiting on the result.
+What it led to: Pushed the new skills to GitHub (the cloud routine needed them there) and created a weekly cloud routine, Mondays 9am Toronto.
