@@ -15,91 +15,40 @@ prompt library built from your own questions.
 
 ---
 
+**Note (corrected 2026-10-27):** The prompts originally logged here as
+#1–3 and #5–19 were about reading the September customer interviews and
+the support tickets, and comparing the two — that was Module 2's work,
+not code investigation. They've been moved to
+`02-super-hearing/prompts.md`, where they actually happened. What
+follows is just the real code investigation, renumbered.
+
 ### 1.
-Read the four customer interviews in the Research section of Rook's wiki. These are four conversations with the people who run the console for our responders. Tell me what they're unhappy about, group it, tell me how many of the four raised each thing, and quote one line for each so I can hear how they actually said it.
-
-### 2.
-Check if those four responders share a handler, area, or capability tag
-
-### 3.
-i am a bit confused, explain to me what the research was trying to identify from the purpose of the research, what was the hypothesis and then what were the key findings. Make it readable and consistent and not too verbose
-
-### 4.
 Check the actual routing code in dispatch-routing
 
-### 5.
-so summarize this to me in plain english with the key finding from the research, what is the likely reason from what you could find and the impact you are foreseeing if we fix it
-
-### 6.
-send me the links to the interviews themslves
-
-### 7.
-get me the .txt files link you have in the github repo
-
-### 8.
-you can't find the actual interview transcripts?
-
-### 9.
-it might not say the word transcript or interview search by the interviewee name
-
-### 10.
-try again it might have been just added
-
-### 11.
-yes, save them as .txt files
-
-### 12.
-going back to the original exercise, from the summary you gave me, prepare a message to be sent to the team
-
-### 13.
-Based on the four interviews, the trouble with 4.2 is that offers now disappear before responders can answer, while some responders sit silent and others never stop.
-[Request interrupted by user]
-give me one sentence that says something like based on the four interviews the problem with 4.2 is... 
-
-Ignore the last message i just gave you
-
-### 14.
-you should have access to tickets data. lets bring this into the analysis and do the same thing: Group them, count them and give me a one liner for each theme you have
-
-### 15.
-ok now with this knowledge and the previous exercise, what can you tell me about the found hypothesis and the recommended messages?
-
-### 16.
-simplify the findings and send it in a 1-2 sentences
-
-### 17.
-You've now read both piles. Where do they disagree? What's loud in the interviews but rare in the tickets, and what's all over the tickets that nobody brought up in the interviews?
-
-### 18.
-summarize this in a table
-
-### 19.
-order them from agree to partially to disagree
-
-### 20.
+### 2.
 Open the folder 00-rook/code/dispatch-routing/. This is the part of our software that decides who gets asked to take a job. I have never read code before and I am not going to start now. Walk me through what happens from the moment something goes wrong somewhere to the moment a responder's phone buzzes, in plain English, no jargon. Then tell me which file each step lives in.
 What it led to: An 8-step (later 12-step) plain-English walkthrough of the ping pipeline, mapped to availability.py, routing.py, offer.py and history.py.
 
-### 21.
+### 3.
 can you tell me why some don't recieve a ping at all
 What it led to: Found two causes: never marked available, or ranked too low to be reached before the callout resolves.
 
-### 22.
+### 4.
 can you tell me if the four cases here were futher down the list and that is why they never get pinged
 
-### 23.
+### 5.
 ok so write me a one sentence conclusion of what you found here
 What it led to: Queried ping order and home-area share; found the four rank 1st-2nd when pinged but are excluded from most callouts entirely (home-turf share fell as low as 16-19%), then a one-sentence root-cause summary.
 
-### 24.
+### 6.
 can you compare with what was implement with the spec that was provided by fro 4.2
 What it led to: Compared the 4.2 wiki spec to config.py; found the engineering manager's own unanswered scope question from two days after ship.
 
-### 25.
+### 7.
 this is very long make it shorter and to the point
 What it led to: Condensed the spec-vs-built comparison into four short lines.
 
-### 26.
+### 8.
 Build me a shareable, interactive artifact: a "case file" explaining what release
 [4.2] did to responders in Rook Dispatch, built from the analysis we have already
 done in this session. Use only data from the rook-wiki, the rook-database, and the
@@ -144,7 +93,7 @@ RULES:
   and give me the link.
 What it led to: Published "Case File 4.2," an interactive comic-styled artifact covering the mechanism, spec-vs-built, defects, a live scoring simulator and a developer checklist (00-rook/case-file-4.2.html).
 
-### 27.
+### 9.
 Install the "wrap-up v2" skill from a classmate's repo into my course folder.
 
 SOURCE (a public repo, pinned to the exact commit that was reviewed):
@@ -173,18 +122,18 @@ RULES:
 - Do not commit or push anything until I say so.
 What it led to: Installed wrap-up v2 from a classmate's repo at a pinned commit, after reading every file; kept the old skill as wrap-up-old; left identical course-setup/settings.json untouched.
 
-### 28.
+### 10.
 Find me the part of this code that takes points off somebody when they miss a ping or turn one down. Show it to me and explain it in plain English. Then find me every single thing in this code that puts points back on.
 What it led to: Pinpointed record_declined (history.py) as the only penalty, and record_accepted as the only credit anywhere in the code.
 
-### 29.
+### 11.
 Somebody has been quiet for a month. Walk me through, step by step, exactly what would have to happen for them to start getting work again.
 What it led to: A 7-step mechanical walkthrough showing recovery needs repeated lucky wins under the shortened timeout, with no shortcut anywhere in the code.
 
-### 30.
+### 12.
 but if htey are 0 and the other ones are higher, would that mean that we will keep getting lower ones since they are never going ot be up the list
 What it led to: Confirmed a winner-take-all feedback loop across the whole pool, corroborated by The Gale's rising ping rate while Meteor Mite (same handler) collapsed.
 
-### 31.
+### 13.
 so how do we fix this, should they create a new account, would that reset the score
 What it led to: Found a new account would reset the score (it's keyed only on name), but flagged it as exploiting the bug, not fixing it; pointed back to the drift-to-neutral fix instead.
