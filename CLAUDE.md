@@ -99,3 +99,9 @@ Company-wide: ~241 employees, HQ at Site Aleph plus Berlin/Singapore/Cornwall of
 - Ran brief.md past Sofia Marino (design) the same way it went past Helen (product) — same mechanics, different reviewer, genuinely different findings: the brief had locked in UI copy and an alert threshold that were actually hers to decide (see 05-super-speed/session-log.md).
 - Scheduled a weekly cloud routine (Mondays, 9am Toronto) to run review-checklist on whichever brief is current: https://claude.ai/code/routines/trig_01HtCi3qbkdk4xZKj2U9gi3o (see 05-super-speed/session-log.md).
 - A classmate's repo has a `root-cause-to-prototype` skill that may already cover this session's whole workflow — not yet reviewed (see 05-super-speed/session-log.md).
+
+### Risk read (27 Oct 2026)
+- Weekly aggregate acceptance-rate reporting can't catch an individual-responder collapse on its own — this investigation only surfaced it through tickets; worth flagging as a standing monitoring gap, not just a one-time miss.
+- Possible irony: the 4.2 proximity reweighting aimed to help remote/wide-geography responders, but if that same group has less reliable signal or older phones, the shorter ping wait may be hitting exactly that population hardest — the fix and the harm may share a group.
+- Wen Li is the only person who understands the ranking logic, there's no written spec, and she was away 14–24 Aug — the exact week acceptance rate cratered. Real bus-factor risk if she's ever unavailable during the next incident.
+- As this analysis gets more granular per responder, worth double-checking it stays clearly inside Rook's "never try to identify who anyone is" policy.

@@ -14,6 +14,7 @@ prompt library built from your own questions.
 ---
 
 ### 1.
+Based on everything you now know about Rook, what should I be worried about that nobody has told me?
 
 ### 2.
 
