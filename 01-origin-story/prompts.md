@@ -23,6 +23,8 @@ prompt library built from your own questions.
 ---
 
 ### 1.
+I just joined Rook Industries as PM for Rook Dispatch. Read `00-rook/company/notes/handoff-from-priya.docx`, and cross-check it against Rook's wiki (Team directory, Glossary, Q3 roadmap, Releases, product one-pagers). Add what you'd need to know to help me do my job here to the CLAUDE.md at the root of this folder: the products, the people, the vocabulary, where things stand. Leave the session scope block at the top, and don't touch `00-rook/company/notes/customer-interviews/` yet — that's for later. Keep it under two pages.
+What it led to: Verified CLAUDE.md's existing company/people/vocabulary/where-things-stand content against the handoff doc and the wiki (Team directory, Glossary, About Rook, both product one-pagers) — confirmed accurate line by line, no corrections needed.
 
 ### 2.
 
