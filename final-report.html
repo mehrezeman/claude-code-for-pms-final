@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Release 4.2: The Case File</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap">
+<style>
+  :root{
+    --page-bg:#0C5A8C;
+    --dot:rgba(255,255,255,0.10);
+    --panel:#FFFFFF;
+    --panel-alt:#EEF5FA;
+    --border:#0A2A43;
+    --text:#0A2A43;
+    --text-soft:#3C5A74;
+    --yellow:#FFC72C;
+    --orange:#FF7A1A;
+    --red:#E6392B;
+    --green:#1C9A57;
+    --shadow:#0A2A43;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --page-bg:#061826; --dot:rgba(255,255,255,0.06);
+      --panel:#152C42; --panel-alt:#0F2235;
+      --border:#FFC72C; --text:#F3EFE3; --text-soft:#B9C9D8; --shadow:#FFC72C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page-bg:#061826; --dot:rgba(255,255,255,0.06);
+    --panel:#152C42; --panel-alt:#0F2235;
+    --border:#FFC72C; --text:#F3EFE3; --text-soft:#B9C9D8; --shadow:#FFC72C;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background-color:var(--page-bg);
+    background-image: radial-gradient(circle, var(--dot) 1.6px, transparent 1.6px);
+    background-size: 15px 15px;
+    color:var(--text);
+    font-family:'Work Sans',system-ui,sans-serif;
+    padding-inline:16px;
+    padding-block:26px 60px;
+  }
+  h1,h2,h3{font-family:'Bangers',system-ui,sans-serif;letter-spacing:.5px;line-height:1.05;}
+  .mono{font-family:'Space Mono',monospace;}
+  .wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:30px;}
+
+  .topbar{display:flex;justify-content:flex-end;}
+  .theme-btn{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;background:var(--yellow);color:#1a1a1a;border:3px solid var(--border);padding:6px 12px;border-radius:999px;cursor:pointer;box-shadow:3px 3px 0 var(--shadow);}
+  .theme-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow);}
+
+  .masthead{background:var(--panel);border:4px solid var(--border);border-radius:10px;box-shadow:10px 10px 0 var(--shadow);padding:30px 28px;position:relative;overflow:hidden;}
+  .masthead .stamp{position:absolute;top:16px;right:-36px;transform:rotate(18deg);background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;letter-spacing:1.5px;padding:4px 44px;border:2px solid var(--border);}
+  .masthead h1{font-size:clamp(32px,6.5vw,56px);margin:0 0 8px;color:var(--text);}
+  .masthead .sub{font-size:16px;color:var(--text-soft);max-width:640px;margin:0 0 14px;}
+  .masthead .meta{display:flex;flex-wrap:wrap;gap:10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-soft);}
+  .masthead .meta span{background:var(--panel-alt);border:1px solid var(--border);padding:3px 8px;border-radius:5px;}
+
+  .eyebrow{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:2px;color:var(--panel);background:var(--border);display:inline-block;padding:4px 10px;border-radius:4px;margin-bottom:10px;}
+  section.panel{background:var(--panel);border:4px solid var(--border);border-radius:10px;box-shadow:8px 8px 0 var(--shadow);padding:26px;}
+  section.panel h2{font-size:clamp(24px,4.5vw,32px);margin:0 0 8px;}
+  .section-intro{color:var(--text-soft);margin:0 0 18px;max-width:680px;font-size:14.5px;line-height:1.6;}
+
+  /* burst stat tiles */
+  .bursts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media (max-width:860px){.bursts{grid-template-columns:repeat(2,1fr);}}
+  .burst-tile{position:relative;aspect-ratio:1/0.85;display:flex;}
+  .burst-tile:nth-child(odd){transform:rotate(-1.4deg);}
+  .burst-tile:nth-child(even){transform:rotate(1.4deg);}
+  .burst-bg,.burst-outline{position:absolute;inset:0;clip-path:polygon(98% 50%,83.3% 63.8%,83.9% 83.9%,63.8% 83.3%,50% 98%,36.2% 83.3%,16.1% 83.9%,16.7% 63.8%,2% 50%,16.7% 36.2%,16.1% 16.1%,36.2% 16.7%,50% 2%,63.8% 16.7%,83.9% 16.1%,83.3% 36.2%);}
+  .burst-outline{inset:-5px;background:var(--border);}
+  .burst-tile:nth-child(4n+1) .burst-bg{background:var(--yellow);}
+  .burst-tile:nth-child(4n+2) .burst-bg{background:var(--orange);}
+  .burst-tile:nth-child(4n+3) .burst-bg{background:var(--orange);}
+  .burst-tile:nth-child(4n+4) .burst-bg{background:var(--yellow);}
+  .burst-content{position:relative;z-index:2;margin:auto;text-align:center;padding:8px 10px;max-width:88%;}
+  .burst-content .label{font-family:'Space Mono',monospace;font-weight:700;font-size:9.5px;letter-spacing:.5px;color:#1a1a1a;margin-bottom:4px;}
+  .burst-content .nums{font-family:'Bangers',sans-serif;font-size:clamp(16px,3.6vw,24px);color:#1a1a1a;line-height:1;white-space:nowrap;}
+  .burst-content .nums .before{opacity:.55;text-decoration:line-through;}
+  .burst-content .nums .arrow{font-size:.7em;margin:0 2px;}
+
+  p{line-height:1.65;font-size:15px;}
+
+  /* module timeline */
+  .timeline{display:flex;flex-direction:column;gap:16px;}
+  .module-card{border:3px solid var(--border);border-radius:9px;padding:16px 18px;background:var(--panel-alt);position:relative;}
+  .module-card .issue-tag{font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:1px;background:var(--border);color:var(--panel);padding:3px 9px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+  .module-card h3{font-size:19px;margin:0 0 10px;font-family:'Work Sans',sans-serif;font-weight:800;}
+  .quote-block{background:var(--panel);border-left:4px solid var(--orange);border-radius:0 6px 6px 0;padding:10px 14px;font-size:13.5px;font-style:italic;color:var(--text);margin-bottom:10px;}
+  .quote-block .who{display:block;font-style:normal;font-family:'Space Mono',monospace;font-size:9.5px;color:var(--text-soft);margin-top:6px;letter-spacing:.5px;}
+  .finding-block{font-size:13.5px;color:var(--text-soft);}
+  .finding-block b{color:var(--text);}
+
+  .module-card.gap{background:repeating-linear-gradient(135deg, var(--panel-alt), var(--panel-alt) 10px, #FFF7E0 10px, #FFF7E0 20px);border-style:dashed;}
+  .gap-stamp{display:inline-block;background:var(--red);color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:1px;padding:3px 9px;border-radius:4px;border:2px solid var(--border);transform:rotate(-2deg);margin-bottom:8px;}
+  .gap-fill{font-family:'Space Mono',monospace;font-size:12px;color:var(--text-soft);border:1px dashed var(--text-soft);border-radius:6px;padding:8px 10px;background:var(--panel);}
+
+  /* mechanism tiles */
+  .mech-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+  @media (max-width:700px){.mech-row{grid-template-columns:1fr;}}
+  .mech-tile{border:2px solid var(--border);border-radius:8px;padding:14px;text-align:center;background:var(--panel-alt);}
+  .mech-tile .big{font-family:'Bangers',sans-serif;font-size:30px;}
+  .mech-tile.bad .big{color:var(--red);}
+  .mech-tile.good .big{color:var(--green);}
+  .mech-tile.neutral .big{color:var(--text-soft);}
+  .mech-tile .cap{font-size:11.5px;color:var(--text-soft);margin-top:4px;}
+
+  /* fix / prototype */
+  .proto-frame-wrap{border:4px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:6px 6px 0 var(--shadow);background:var(--panel-alt);}
+  .proto-frame-wrap iframe{width:100%;height:640px;border:none;display:block;background:#fff;}
+  .proto-fallback{padding:18px;font-size:13.5px;}
+  .open-standalone{display:inline-block;margin-top:12px;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;background:var(--yellow);color:#1a1a1a;border:2px solid var(--border);padding:8px 14px;border-radius:6px;text-decoration:none;}
+
+  /* prevention cards */
+  .prevent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media (max-width:800px){.prevent-grid{grid-template-columns:1fr;}}
+  .prevent-card{border:2px solid var(--border);border-radius:8px;padding:16px;background:var(--panel-alt);}
+  .prevent-card h4{font-family:'Work Sans',sans-serif;font-weight:800;font-size:15px;margin:0 0 6px;}
+  .prevent-card p{font-size:12.5px;color:var(--text-soft);margin:0;}
+  .prevent-card .tag{font-family:'Space Mono',monospace;font-size:9.5px;background:var(--border);color:var(--panel);padding:2px 7px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+
+  footer{color:var(--panel);font-size:11.5px;text-align:center;opacity:.85;font-family:'Space Mono',monospace;line-height:1.8;}
+  footer a{color:var(--yellow);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar"><button class="theme-btn" id="themeBtn" type="button">AUTO</button></div>
+
+  <header class="masthead">
+    <div class="stamp">FINAL REPORT</div>
+    <h1>Release 4.2: The Case File</h1>
+    <p class="sub">Six sessions. One new PM, two weeks in. The release that quietly stopped four responders from ever getting called again — what we found, why it happened, and what stops it from happening again.</p>
+    <div class="meta">
+      <span>ROOK DISPATCH</span>
+      <span>RELEASE 4.2 — 12 AUG 2026</span>
+      <span>6 MODULES</span>
+      <span>FICTIONAL COURSE EXERCISE</span>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="eyebrow">THE NUMBERS</div>
+    <h2>What actually changed</h2>
+    <p class="section-intro">Measured, not estimated — pulled from Rook's own ping records, split at the 12 August release.</p>
+    <div class="bursts">
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content"><div class="label">ACCEPTANCE RATE</div><div class="nums"><span class="before">77%</span><span class="arrow">&rarr;</span>64%</div></div>
+      </div>
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content"><div class="label">GONE BEFORE ANSWERED</div><div class="nums"><span class="before">2%</span><span class="arrow">&rarr;</span>18%</div></div>
+      </div>
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content"><div class="label">4 HEROES' HOME-TURF SHARE</div><div class="nums"><span class="before">100%</span><span class="arrow">&rarr;</span>16-28%</div></div>
+      </div>
+      <div class="burst-tile"><div class="burst-outline"></div><div class="burst-bg"></div>
+        <div class="burst-content"><div class="label">PING ANSWER WINDOW</div><div class="nums"><span class="before">90s</span><span class="arrow">&rarr;</span>60s</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">THE STORY</div>
+    <h2>What happened, plainly</h2>
+    <p>Release 4.2 shipped on 12 August — a long-requested, genuinely good change that weighted proximity higher so responders in wide or remote areas stopped losing jobs to someone with a better acceptance record 40 minutes away. It shipped alongside a smaller change: the answer window on a ping got cut from 90 seconds to 60. Acceptance rate dropped and complaints went up. The outgoing PM's read, in the handoff: probably seasonal, August is always soft. It wasn't. Four responders — Farlight, The Undertow, Vesper, and Meteor Mite — nearly stopped getting called at all, and kept getting worse, not better, for weeks. The cause wasn't the headline change. It was a quiet bug in how Rook scores a responder's recent reliability: a miss costs more than a take earns back, and nothing ever lets that score recover on its own. The shorter timeout just made misses more likely to happen in the first place.</p>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">THE INVESTIGATION</div>
+    <h2>Six sessions, in the PM's own words</h2>
+    <p class="section-intro">One real prompt and one real finding from each module — exactly as typed, exactly as found. Two modules weren't logged in this repo; they're marked honestly rather than filled in with a guess.</p>
+    <div class="timeline">
+
+      <div class="module-card gap">
+        <span class="issue-tag">MODULE 1 — ORIGIN STORY</span>
+        <div class="gap-stamp">CASE FILE INCOMPLETE</div>
+        <h3>Meeting the company</h3>
+        <div class="gap-fill">No prompt logged in this repo for this module — likely run in a different chat session. What exists instead: CLAUDE.md's own company, people, and vocabulary sections were clearly built during a session like this one, but there's no record of the exact prompts that produced them.<br><br>&rarr; paste the real prompt here when you have it.</div>
+      </div>
+
+      <div class="module-card gap">
+        <span class="issue-tag">MODULE 2 — SUPER HEARING</span>
+        <div class="gap-stamp">CASE FILE INCOMPLETE</div>
+        <h3>Reading the interviews and tickets</h3>
+        <div class="gap-fill">No prompt logged here either. Module 3's own notes confirm the work happened — "last session you read four conversations and every support ticket since 4.2 — and found the two piles did not agree" — but that's secondhand, not a logged prompt.<br><br>&rarr; paste the real prompt here when you have it.</div>
+      </div>
+
+      <div class="module-card">
+        <span class="issue-tag">MODULE 3 — REWIND</span>
+        <h3>Ruling out "it's just seasonal"</h3>
+        <div class="quote-block">"do you have access to last years data to rule out the seasonality impact?"<span class="who">— the PM's own prompt, 03-rewind/prompts.md</span></div>
+        <div class="finding-block"><b>What it found:</b> no prior-year data exists in the database, so the "it's seasonal" claim can't even be checked — and the acceptance-rate drop is a sharp cliff exactly at the 12 Aug release, not a gradual seasonal slide, which argues against seasonality anyway.</div>
+      </div>
+
+      <div class="module-card">
+        <span class="issue-tag">MODULE 4 — X-RAY VISION</span>
+        <h3>Finding the actual bug in the code</h3>
+        <div class="quote-block">"Find me the part of this code that takes points off somebody when they miss a ping or turn one down. Show it to me and explain it in plain English. Then find me every single thing in this code that puts points back on."<span class="who">— the PM's own prompt, 04-x-ray-vision/prompts.md</span></div>
+        <div class="finding-block"><b>What it found:</b> <span class="mono">record_declined</span> is the only place a responder's score ever drops; <span class="mono">record_accepted</span> is the only place it ever rises — anywhere in the whole codebase. No decay, no reset, no other path back.</div>
+      </div>
+
+      <div class="module-card">
+        <span class="issue-tag">MODULE 5 — SUPER SPEED</span>
+        <h3>Watching it happen to one real responder</h3>
+        <div class="quote-block">"Pick one responder from the database who went quiet. Show me every week for them, how many times we pinged them, how many they took. Then tell me what happened to that person, week by week, in plain English."<span class="who">— the PM's own prompt, 05-super-speed/prompts.md</span></div>
+        <div class="finding-block"><b>What it found:</b> Meteor Mite's share of their own local jobs collapsed from 52% to 16% after 4.2 — proof the company-wide average was quietly hiding a small group of people who never recovered.</div>
+      </div>
+
+      <div class="module-card">
+        <span class="issue-tag">MODULE 6 — SIDEKICKS</span>
+        <h3>What nobody had said out loud yet</h3>
+        <div class="quote-block">"Based on everything you now know about Rook, what should I be worried about that nobody has told me?"<span class="who">— the PM's own prompt, 06-sidekicks/prompts.md</span></div>
+        <div class="finding-block"><b>What it found:</b> the fix and the harm may share a population — 4.2's proximity change was built to help remote/wide-geography responders, but if that same group has less reliable signal, the shorter ping window may be hitting exactly them hardest.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">THE MECHANISM</div>
+    <h2>Why a quiet patch never got better on its own</h2>
+    <p class="section-intro">Three numbers explain the whole trap.</p>
+    <div class="mech-row">
+      <div class="mech-tile bad"><div class="big">&minus;0.12</div><div class="cap">points lost for one missed or declined ping</div></div>
+      <div class="mech-tile good"><div class="big">+0.08</div><div class="cap">points gained for one taken ping — less than a miss costs</div></div>
+      <div class="mech-tile neutral"><div class="big">0</div><div class="cap">points gained for simply waiting — nothing ever drifts back on its own</div></div>
+    </div>
+    <p>A responder who misses a stretch of pings right after the window got shorter falls into a hole that's deeper to climb out of than it was to fall into — and the only way out is getting offered another job, which is exactly what a low score makes less likely. It's a trap with no floor and no expiry, flagged in the code itself as an open question since 2019 and never resolved.</p>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">THE FIX</div>
+    <h2>What it would actually feel like</h2>
+    <p class="section-intro">Not a setting. A real mockup of what a handler (Kip) and a quiet responder (Meteor Mite) would each see, built and pressure-tested across multiple reviewer rounds. Click through it below, or open it on its own.</p>
+    <div class="proto-frame-wrap">
+      <iframe src="05-super-speed/prototype.html" title="The Fix: What They'd See" loading="lazy">
+        <div class="proto-fallback">Your browser didn't load the embedded prototype — open it directly: <a href="05-super-speed/prototype.html">05-super-speed/prototype.html</a></div>
+      </iframe>
+    </div>
+    <a class="open-standalone" href="05-super-speed/prototype.html" target="_blank" rel="noopener">OPEN STANDALONE &rarr;</a>
+  </section>
+
+  <section class="panel">
+    <div class="eyebrow">THE HABIT</div>
+    <h2>How this stops happening again</h2>
+    <p class="section-intro">The fix solves this one bug. These solve the pattern — catching a half-built brief before it ships, not after.</p>
+    <div class="prevent-grid">
+      <div class="prevent-card">
+        <span class="tag">SKILL</span>
+        <h4>review-checklist</h4>
+        <p>Checks any brief for four things that are easy to skip under deadline: a named owner, a real success measure, consistent scope start to finish, and the problem explained before the fix. Read-only — it reports, it doesn't rewrite.</p>
+      </div>
+      <div class="prevent-card">
+        <span class="tag">SKILL</span>
+        <h4>multi-model-review</h4>
+        <p>Runs a document past a specific stakeholder — in character, across several different models in parallel — and reconciles the results into one agreement/discrepancy table instead of a single opinion. Used on this exact brief, by two different reviewers, and caught real issues each time.</p>
+      </div>
+      <div class="prevent-card">
+        <span class="tag">ROUTINE</span>
+        <h4>Weekly review-checklist</h4>
+        <p>A standing habit, not a one-off: every Monday morning, the checklist runs automatically against whatever brief is current and reports what it finds — so the next one gets checked before it ships, not after.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Sources: CLAUDE.md, and the prompts.md / session-log.md files in each module folder of this repo.<br>
+    Rook Industries is fictional. Internal course exercise — not a real company, not real data.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var themeBtn = document.getElementById('themeBtn');
+  var themeOrder = ['system','light','dark'];
+  var themeLabels = {system:'AUTO', light:'DAY', dark:'NIGHT'};
+  var curTheme = 'system';
+  try{ curTheme = localStorage.getItem('final-report-theme') || 'system'; }catch(e){}
+  function applyTheme(t){
+    if(t==='system'){ document.documentElement.removeAttribute('data-theme'); }
+    else{ document.documentElement.setAttribute('data-theme', t); }
+    themeBtn.textContent = themeLabels[t];
+  }
+  applyTheme(curTheme);
+  themeBtn.addEventListener('click', function(){
+    curTheme = themeOrder[(themeOrder.indexOf(curTheme)+1) % themeOrder.length];
+    applyTheme(curTheme);
+    try{ localStorage.setItem('final-report-theme', curTheme); }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
